@@ -27,15 +27,22 @@ void SimRISCV::reset(){
 void SimRISCV::ori(int rd,int rs1,int imm){
 	SimRISCV* tmp = get_sim();
 	tmp->pc += 4;
-
-	std::cout << tmp->pc<<std::endl;
 	tmp->gpregs[rd] = imm | tmp->gpregs[rs1];
-	std::cout << tmp->gpregs[1]<<std::endl;
+
 
 }
-int main () {
-	SimRISCV::reset();
-	SimRISCV::ori(1,1,1);
-	SimRISCV::ori(1,1,2);
-	return 0;
+
+void SimRISCV::score(cpu* uut){
+	SimRISCV* tmp = get_sim();
+
+	if(uut->PC!=tmp->pc){
+		std::cout << "Bad PC" << std::endl;
+	}
+	for(uint8_t i = 0;i<32;i++){
+		if(uut->cpu_top__DOT__GPREGS[i]!=tmp->gpregs[i]){
+			std::cout << "Bad reg" << std::endl;
+		}
+	}
+
+
 }

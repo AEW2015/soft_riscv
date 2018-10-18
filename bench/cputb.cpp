@@ -2,7 +2,7 @@
 #include "cpu.h"
 #include "cpu_typePack.h"
 #include "verilated_vcd_c.h"
-
+#include "simriscv.h"
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -74,11 +74,9 @@ int main (int argc, char** argv)
 		uut->CLOCK = uut->CLOCK ? 0 : 1;
 		uut->eval();
 		main_time++;
+		SimRISCV::ori(reg,0,value);
 
-
-
-		assertSignal(uut->PC,cycle);
-		assertSignal(uut->cpu_top__DOT__GPREGS[reg],value);
+		SimRISCV::score(uut);
 
 	}
 	uut->final();

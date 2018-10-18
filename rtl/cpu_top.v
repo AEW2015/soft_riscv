@@ -7,7 +7,7 @@ module cpu_top (input logic CLOCK,
 	logic [6:0] test;
 	assign test = INST.itype.opcode;
 	always_ff @(posedge CLOCK) begin
-		PC <= PC +1;
+		PC <= PC +4;
 	end
 
 	always_ff @(posedge CLOCK) begin
