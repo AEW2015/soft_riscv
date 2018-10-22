@@ -4,12 +4,14 @@
 #include "verilated_vcd_c.h"
 #include "simriscv.h"
 #include <iostream>
+#include <sstream>  
 #include <string>
 #include <cstdlib>
 #include <cstdio>
 #include "inst.h"
 
 cpu *uut;
+VerilatedVcdC* tfp;
 vluint64_t main_time = 0;
 double sc_time_stamp () {
 	return main_time;
@@ -28,10 +30,12 @@ void assertSignal (uint32_t a, uint32_t b){
 		}
 }
 
+void excute_instr();
+
 int main (int argc, char** argv)
 {
 	bool vcdTrace = true;
-	VerilatedVcdC* tfp = NULL;
+	tfp = NULL;
 
 	Verilated::commandArgs(argc, argv);
 	uut = new cpu;
@@ -52,33 +56,34 @@ int main (int argc, char** argv)
 
 	}
 
-	uut->CLOCK = 0;
+	uut->CLOCK = 1;
 
 
-	for(int cycle = 1;cycle<1000;cycle++)
+	for(int cycle = 1;cycle<10000;cycle++)
 	{
 
-		int reg = rand()%32;
-		int value = rand()%4096;
-		uut->INST =  ori(reg,0,value);
-
-		if (tfp != NULL)
-			tfp->dump(main_time);
-		uut->CLOCK = uut->CLOCK ? 0 : 1;
-		uut->eval();
-		main_time++;
-
-
-		if (tfp != NULL)
-			tfp->dump(main_time);
-		uut->CLOCK = uut->CLOCK ? 0 : 1;
-		uut->eval();
-		main_time++;
-		SimRISCV::ori(reg,0,value);
-
-		SimRISCV::score(uut);
-
+		excute_instr();
+		std::stringstream str;
+		if(SimRISCV::score(uut,str)){
+			std::cout << "Errors @" <<  sc_time_stamp() << std::endl << str.str() << std::endl;
+			break;
+		}
+			
 	}
+	if (tfp != NULL)
+		tfp->dump(main_time);
+	uut->CLOCK = uut->CLOCK ? 0 : 1;
+	uut->eval();
+	main_time++;
+
+
+	if (tfp != NULL)
+		tfp->dump(main_time);
+	uut->CLOCK = uut->CLOCK ? 0 : 1;
+	uut->eval();
+	main_time++;
+
+
 	uut->final();
 
 	if(tfp != NULL)
@@ -90,4 +95,45 @@ int main (int argc, char** argv)
 	delete uut;
 	return 0;
 
+}
+
+#define CASES 8
+
+void excute_instr(){
+		int randCase = rand()%CASES;
+		int reg = rand()%32;
+		int reg2 = rand()%32;
+		int value = rand()%4096;
+		int value20 = rand()%1048576;
+		int svalue = value - 2048;
+		uint32_t cmd;
+
+		switch (randCase){
+			case 0:cmd =   ori(reg,reg2,svalue); SimRISCV::ori(reg,reg2,svalue); break;
+			case 1:cmd =  andi(reg,reg2,svalue); SimRISCV::andi(reg,reg2,svalue); break;
+			case 2:cmd =  addi(reg,reg2,svalue); SimRISCV::addi(reg,reg2,svalue); break;
+			case 3:cmd =  xori(reg,reg2,svalue); SimRISCV::xori(reg,reg2,svalue); break;
+			case 4:cmd =  slti(reg,reg2,svalue); SimRISCV::slti(reg,reg2,svalue); break;
+			case 5:cmd =  sltiu(reg,reg2,svalue); SimRISCV::sltiu(reg,reg2,svalue); break;
+			case 6:cmd =  lui(reg,value20); SimRISCV::lui(reg,value20); break;
+			case 7:cmd =  auipc(reg,value20); SimRISCV::auipc(reg,value20); break;
+		}
+		uut->INST = cmd;
+		
+
+		if (tfp != NULL)
+			tfp->dump(main_time);
+		uut->CLOCK = uut->CLOCK ? 0 : 1;
+		uut->eval();
+		main_time++;
+
+
+		if (tfp != NULL)
+			tfp->dump(main_time);
+		uut->CLOCK = uut->CLOCK ? 0 : 1;
+		uut->eval();
+		main_time++;
+
+		
+		
 }
