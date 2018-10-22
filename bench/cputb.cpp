@@ -117,6 +117,7 @@ void excute_instr(){
 			case 5:cmd =  sltiu(reg,reg2,svalue); SimRISCV::sltiu(reg,reg2,svalue); break;
 			case 6:cmd =  lui(reg,value20); SimRISCV::lui(reg,value20); break;
 			case 7:cmd =  auipc(reg,value20); SimRISCV::auipc(reg,value20); break;
+			case 8:cmd =  slti(reg,reg2,svalue); SimRISCV::slti(reg,reg2,svalue); break;
 		}
 		uut->INST = cmd;
 		

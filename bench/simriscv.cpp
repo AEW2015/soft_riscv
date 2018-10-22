@@ -92,6 +92,16 @@ void SimRISCV::sltiu(int rd,int rs1,int imm){
 	
 
 }
+void SimRISCV::slli(int rd,int rs1,int shamt){
+	lastCmd.str("");
+	lastCmd << "slli "<< rd <<","<<rs1<<","<< imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->gpregs[rd] = tmp->gpregs[rs1]<;
+	
+
+}
 void SimRISCV::lui(int rd,int imm){
 	lastCmd.str("");
 	lastCmd << "lui "<< rd <<","<< HEX imm;
