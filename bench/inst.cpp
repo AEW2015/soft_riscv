@@ -117,6 +117,11 @@ uint32_t srl (int rd, int rs1, int rs2){
 	uint32_t cmd = op_inst(rd,rs1,rs2,cpu_typePack::FIMM::SRL);
 	return cmd;
 }
+uint32_t andr (int rd, int rs1, int rs2){
+
+	uint32_t cmd = op_inst(rd,rs1,rs2,cpu_typePack::FIMM::AND);
+	return cmd;
+}
 
 uint32_t sra (int rd, int rs1, int rs2){
 	uint16_t tmp = 0x400 | rs2;

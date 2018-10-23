@@ -41,7 +41,7 @@ module cpu_top (input logic CLOCK,
 					typePack::OR :
 						GPREGS[INST.itype.rd] <= sign_extendded_imm | GPREGS[INST.itype.rs1];
 					typePack::AND :
-						GPREGS[INST.itype.rd] <= sign_extendded_imm & GPREGS[INST.itype.rs1];
+						GPREGS[INST.rtype.rd] <= GPREGS[INST.rtype.rs2] & GPREGS[INST.rtype.rs1];
 					typePack::ADD :
 						if (INST.rtype.funct7[5] == 1)
 							GPREGS[INST.rtype.rd] <= GPREGS[INST.rtype.rs1] - GPREGS[INST.rtype.rs2];

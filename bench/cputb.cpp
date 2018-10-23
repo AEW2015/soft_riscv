@@ -97,7 +97,7 @@ int main (int argc, char** argv)
 
 }
 
-#define CASES 16
+#define CASES 17
 
 void excute_instr(){
 		int randCase = rand()%CASES;
@@ -127,6 +127,7 @@ void excute_instr(){
 			case 13:cmd =  sll(reg,reg2,reg3); SimRISCV::sll(reg,reg2,reg3); break;
 			case 14:cmd =  srl(reg,reg2,reg3); SimRISCV::srl(reg,reg2,reg3); break;
 			case 15:cmd =  sra(reg,reg2,reg3); SimRISCV::sra(reg,reg2,reg3); break;
+			case 16:cmd =  andr(reg,reg2,reg3); SimRISCV::andr(reg,reg2,reg3); break;
 		}
 		uut->INST = cmd;
 		
