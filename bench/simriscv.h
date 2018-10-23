@@ -21,6 +21,7 @@ public:
 	static void orr(int rd,int rs1,int rs2);
 	static void xorr(int rd,int rs1,int rs2);
 	static void slt(int rd,int rs1,int rs2);
+	static void sltu(int rd,int rs1,int rs2);
 	static void addi(int rd,int rs1,int imm);
 	static void xori(int rd,int rs1,int imm);
 	static void slti(int rd,int rs1,int imm);

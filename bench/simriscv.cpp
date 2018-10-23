@@ -180,6 +180,18 @@ void SimRISCV::slt(int rd,int rs1,int rs2){
 	tmp->gpregs[rd] = 0;
 
 }
+void SimRISCV::sltu(int rd,int rs1,int rs2){
+	lastCmd.str("");
+	lastCmd << "sltu "<< rd <<","<<rs1<<","<< L2 rs2;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	if(((uint32_t)tmp->gpregs[rs1])<((uint32_t)tmp->gpregs[rs2]))
+	tmp->gpregs[rd] = 1;
+	else
+	tmp->gpregs[rd] = 0;
+
+}
 void SimRISCV::sra(int rd,int rs1,int rs2){
 	lastCmd.str("");
 	lastCmd << "sra "<< rd <<","<<rs1<<","<< L2 rs2;

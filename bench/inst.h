@@ -31,6 +31,7 @@ uint32_t andr (int rd, int rs1, int rs2);
 uint32_t orr (int rd, int rs1, int rs2);
 uint32_t xorr (int rd, int rs1, int rs2);
 uint32_t slt (int rd, int rs1, int rs2);
+uint32_t sltu (int rd, int rs1, int rs2);
 uint32_t sra (int rd, int rs1, int rs2);
 uint32_t srli (int rd, int rs, int shamt);
 uint32_t srai (int rd, int rs, int shamt);

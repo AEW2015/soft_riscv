@@ -137,6 +137,11 @@ uint32_t slt (int rd, int rs1, int rs2){
 	uint32_t cmd = op_inst(rd,rs1,rs2,cpu_typePack::FIMM::SLT);
 	return cmd;
 }
+uint32_t sltu (int rd, int rs1, int rs2){
+
+	uint32_t cmd = op_inst(rd,rs1,rs2,cpu_typePack::FIMM::SLTU);
+	return cmd;
+}
 
 uint32_t sra (int rd, int rs1, int rs2){
 	uint16_t tmp = 0x400 | rs2;
