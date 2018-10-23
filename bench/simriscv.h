@@ -18,6 +18,7 @@ public:
 	static void ori(int rd,int rs1,int imm);
 	static void andi(int rd,int rs1,int imm);
 	static void andr(int rd,int rs1,int imm);
+	static void orr(int rd,int rs1,int imm);
 	static void addi(int rd,int rs1,int imm);
 	static void xori(int rd,int rs1,int imm);
 	static void slti(int rd,int rs1,int imm);

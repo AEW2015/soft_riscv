@@ -39,7 +39,7 @@ module cpu_top (input logic CLOCK,
 			typePack::OP :
 				unique case(INST.rtype.funct3)
 					typePack::OR :
-						GPREGS[INST.itype.rd] <= sign_extendded_imm | GPREGS[INST.itype.rs1];
+						GPREGS[INST.rtype.rd] <= GPREGS[INST.rtype.rs2] | GPREGS[INST.rtype.rs1];
 					typePack::AND :
 						GPREGS[INST.rtype.rd] <= GPREGS[INST.rtype.rs2] & GPREGS[INST.rtype.rs1];
 					typePack::ADD :
