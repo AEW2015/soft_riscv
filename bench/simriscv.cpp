@@ -94,11 +94,64 @@ void SimRISCV::sltiu(int rd,int rs1,int imm){
 }
 void SimRISCV::slli(int rd,int rs1,int shamt){
 	lastCmd.str("");
-	lastCmd << "slli "<< rd <<","<<rs1<<","<< imm;
+	lastCmd << "slli "<< rd <<","<<rs1<<","<< shamt;
 	if (V) std::cout << lastCmd.str() << std::endl;
 	SimRISCV* tmp = get_sim();
 	tmp->pc += 4;
-	tmp->gpregs[rd] = tmp->gpregs[rs1]<;
+	tmp->gpregs[rd] = tmp->gpregs[rs1]<<shamt;
+	
+
+}
+void SimRISCV::srli(int rd,int rs1,int shamt){
+	lastCmd.str("");
+	lastCmd << "srli "<< rd <<","<<rs1<<","<< shamt;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->gpregs[rd] = (uint32_t)tmp->gpregs[rs1]>>shamt;
+	
+
+}
+void SimRISCV::sll(int rd,int rs1,int rs2){
+	lastCmd.str("");
+	lastCmd << "sll "<< rd <<","<<rs1<<","<< rs2;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	if((uint32_t)tmp->gpregs[rs2]>32)
+	tmp->gpregs[rd] = ((uint32_t)tmp->gpregs[rs1])<<(32);
+	else
+	tmp->gpregs[rd] = ((uint32_t)tmp->gpregs[rs1])<<((uint32_t)tmp->gpregs[rs2]);
+
+
+}
+void SimRISCV::srai(int rd,int rs1,int shamt){
+	lastCmd.str("");
+	lastCmd << "srai "<< rd <<","<<rs1<<","<< shamt;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->gpregs[rd] = tmp->gpregs[rs1]>>shamt;
+	
+
+}
+void SimRISCV::add(int rd,int rs1,int rs2){
+	lastCmd.str("");
+	lastCmd << "add "<< L2 rd <<","<<rs1<<","<< rs2;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->gpregs[rd] = tmp->gpregs[rs1]+tmp->gpregs[rs2];
+	
+
+}
+void SimRISCV::sub(int rd,int rs1,int rs2){
+	lastCmd.str("");
+	lastCmd << "sub "<< L2 rd <<","<<rs1<<","<< rs2;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->gpregs[rd] = tmp->gpregs[rs1]-tmp->gpregs[rs2];
 	
 
 }

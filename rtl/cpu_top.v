@@ -16,18 +16,50 @@ module cpu_top (input logic CLOCK,
 				GPREGS[INST.utype.rd] <= {INST.utype.imm,{12{1'b0}}} + PC;
 			typePack::IMM :
 				unique case(INST.itype.funct3)
-					typePack::ORI :
+					typePack::OR :
 						GPREGS[INST.itype.rd] <= sign_extendded_imm | GPREGS[INST.itype.rs1];
-					typePack::ANDI :
+					typePack::AND :
 						GPREGS[INST.itype.rd] <= sign_extendded_imm & GPREGS[INST.itype.rs1];
-					typePack::ADDI :
+					typePack::ADD :
 						GPREGS[INST.itype.rd] <= sign_extendded_imm + GPREGS[INST.itype.rs1];
-					typePack::XORI :
+					typePack::XOR :
 						GPREGS[INST.itype.rd] <= sign_extendded_imm ^ GPREGS[INST.itype.rs1];
-					typePack::SLTI :
+					typePack::SLT :
 						GPREGS[INST.itype.rd] <= $signed(sign_extendded_imm) > $signed(GPREGS[INST.itype.rs1]);
-					typePack::SLTIU :
+					typePack::SLTU :
 						GPREGS[INST.itype.rd] <= sign_extendded_imm > GPREGS[INST.itype.rs1];
+					typePack::SLL :
+						GPREGS[INST.itype.rd] <= GPREGS[INST.itype.rs1] << INST.itype.imm[4:0];
+					typePack::SRL :
+						if (INST.itype.imm[10] == 1)
+							GPREGS[INST.itype.rd] <= $signed(GPREGS[INST.itype.rs1]) >>> INST.itype.imm[4:0];
+						else
+							GPREGS[INST.itype.rd] <= GPREGS[INST.itype.rs1] >> INST.itype.imm[4:0];
+				endcase
+			typePack::OP :
+				unique case(INST.rtype.funct3)
+					typePack::OR :
+						GPREGS[INST.itype.rd] <= sign_extendded_imm | GPREGS[INST.itype.rs1];
+					typePack::AND :
+						GPREGS[INST.itype.rd] <= sign_extendded_imm & GPREGS[INST.itype.rs1];
+					typePack::ADD :
+						if (INST.rtype.funct7[5] == 1)
+							GPREGS[INST.rtype.rd] <= GPREGS[INST.rtype.rs1] - GPREGS[INST.rtype.rs2];
+						else
+							GPREGS[INST.rtype.rd] <= GPREGS[INST.rtype.rs2] + GPREGS[INST.rtype.rs1];
+					typePack::XOR :
+						GPREGS[INST.itype.rd] <= sign_extendded_imm ^ GPREGS[INST.itype.rs1];
+					typePack::SLT :
+						GPREGS[INST.rtype.rd] <= $signed(sign_extendded_imm) > $signed(GPREGS[INST.itype.rs1]);
+					typePack::SLTU :
+						GPREGS[INST.itype.rd] <= sign_extendded_imm > GPREGS[INST.itype.rs1];
+					typePack::SLL :
+						GPREGS[INST.rtype.rd] <= GPREGS[INST.rtype.rs1] << GPREGS[INST.rtype.rs2];
+					typePack::SRL :
+						if (INST.itype.imm[10] == 1)
+							GPREGS[INST.itype.rd] <= $signed(GPREGS[INST.itype.rs1]) >>> INST.itype.imm[4:0];
+						else
+							GPREGS[INST.itype.rd] <= GPREGS[INST.itype.rs1] >> INST.itype.imm[4:0];
 				endcase
 			typePack::OMM :
 				GPREGS[1] <= 0;

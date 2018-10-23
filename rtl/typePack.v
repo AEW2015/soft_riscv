@@ -4,17 +4,20 @@ typedef enum logic[6:0]{
 	LUI = 7'b0110111,
 	AUIPC = 7'b0010111,
 	IMM = 7'b0010011,
+	OP = 7'b0110011,
 	OMM = 7'b0000011
 }
 opcodes /* verilator public */;
 
 typedef enum logic[2:0]{
-	ADDI = 3'b000,
-	SLTI = 3'b010,
-	SLTIU = 3'b011,
-	XORI = 3'b100,
-	ORI = 3'b110,
-	ANDI = 3'b111
+	ADD = 3'b000,
+	SLT = 3'b010,
+	SLTU = 3'b011,
+	SLL = 3'b001,
+	SRL = 3'b101,
+	XOR = 3'b100,
+	OR = 3'b110,
+	AND = 3'b111
 } FIMM  /* verilator public */;
 
 localparam ASUB = 7'b0100000;
@@ -30,7 +33,19 @@ typedef struct packed
 	opcodes opcode;
 
 
-} ITYPE_T  /* verilator public */;typedef struct packed
+} ITYPE_T  /* verilator public */;
+typedef struct packed
+{
+	logic [6:0] funct7;
+	logic [4:0] rs2;
+	logic [4:0] rs1;
+	logic [2:0] funct3;
+	logic [4:0] rd;
+	opcodes opcode;
+
+
+} RTYPE_T  /* verilator public */;
+typedef struct packed
 {
 	logic[19:0] imm;
 	logic [4:0] rd;
@@ -42,6 +57,7 @@ typedef struct packed
 typedef union packed
 {
   ITYPE_T itype;
+  RTYPE_T rtype;
   UTYPE_T utype;
 } instruction_t /* verilator public */;
 

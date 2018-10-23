@@ -21,6 +21,12 @@ public:
 	static void xori(int rd,int rs1,int imm);
 	static void slti(int rd,int rs1,int imm);
 	static void sltiu(int rd,int rs1,int imm);
+	static void slli(int rd,int rs1,int shamt);
+	static void sll(int rd,int rs1,int rs2);
+	static void srli(int rd,int rs1,int shamt);
+	static void srai(int rd,int rs1,int shamt);
+	static void add(int rd,int rs1,int rs2);
+	static void sub(int rd,int rs1,int rs2);
 	static void lui(int rd,int imm);
 	static void auipc(int rd,int imm);
 	static uint32_t score(cpu* uut,std::stringstream& emesg);
