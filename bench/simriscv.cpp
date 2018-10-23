@@ -150,11 +150,21 @@ void SimRISCV::andr(int rd,int rs1,int rs2){
 }
 void SimRISCV::orr(int rd,int rs1,int rs2){
 	lastCmd.str("");
-	lastCmd << "orr "<< rd <<","<<rs1<<","<< L2 rs2;
+	lastCmd << "or "<< rd <<","<<rs1<<","<< L2 rs2;
 	if (V) std::cout << lastCmd.str() << std::endl;
 	SimRISCV* tmp = get_sim();
 	tmp->pc += 4;
 	tmp->gpregs[rd] = (tmp->gpregs[rs1])|(tmp->gpregs[rs2]);
+
+
+}
+void SimRISCV::xorr(int rd,int rs1,int rs2){
+	lastCmd.str("");
+	lastCmd << "xor "<< rd <<","<<rs1<<","<< L2 rs2;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->gpregs[rd] = (tmp->gpregs[rs1])^(tmp->gpregs[rs2]);
 
 
 }
