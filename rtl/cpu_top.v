@@ -50,7 +50,7 @@ module cpu_top (input logic CLOCK,
 					typePack::XOR :
 						GPREGS[INST.rtype.rd] <= GPREGS[INST.rtype.rs2] ^ GPREGS[INST.rtype.rs1];
 					typePack::SLT :
-						GPREGS[INST.rtype.rd] <= $signed(sign_extendded_imm) > $signed(GPREGS[INST.itype.rs1]);
+						GPREGS[INST.rtype.rd] <= $signed(GPREGS[INST.rtype.rs2]) > $signed(GPREGS[INST.rtype.rs1]);
 					typePack::SLTU :
 						GPREGS[INST.itype.rd] <= sign_extendded_imm > GPREGS[INST.itype.rs1];
 					typePack::SLL :
