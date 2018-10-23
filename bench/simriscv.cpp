@@ -118,10 +118,23 @@ void SimRISCV::sll(int rd,int rs1,int rs2){
 	if (V) std::cout << lastCmd.str() << std::endl;
 	SimRISCV* tmp = get_sim();
 	tmp->pc += 4;
-	if((uint32_t)tmp->gpregs[rs2]>32)
-	tmp->gpregs[rd] = ((uint32_t)tmp->gpregs[rs1])<<(32);
+	if((uint32_t)tmp->gpregs[rs2]>=32)
+	tmp->gpregs[rd] = 0;
 	else
 	tmp->gpregs[rd] = ((uint32_t)tmp->gpregs[rs1])<<((uint32_t)tmp->gpregs[rs2]);
+
+
+}
+void SimRISCV::srl(int rd,int rs1,int rs2){
+	lastCmd.str("");
+	lastCmd << "srl "<< rd <<","<<rs1<<","<< L2 rs2;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	if((uint32_t)tmp->gpregs[rs2]>=32)
+	tmp->gpregs[rd] = 0;
+	else
+	tmp->gpregs[rd] = ((uint32_t)tmp->gpregs[rs1])>>((uint32_t)tmp->gpregs[rs2]);
 
 
 }

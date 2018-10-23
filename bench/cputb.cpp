@@ -59,7 +59,7 @@ int main (int argc, char** argv)
 	uut->CLOCK = 1;
 
 
-	for(int cycle = 1;cycle<10000;cycle++)
+	for(int cycle = 1;cycle<1000000;cycle++)
 	{
 
 		excute_instr();
@@ -97,7 +97,7 @@ int main (int argc, char** argv)
 
 }
 
-#define CASES 14
+#define CASES 15
 
 void excute_instr(){
 		int randCase = rand()%CASES;
@@ -125,6 +125,7 @@ void excute_instr(){
 			case 11:cmd =  add(reg,reg2,reg3); SimRISCV::add(reg,reg2,reg3); break;
 			case 12:cmd =  sub(reg,reg2,reg3); SimRISCV::sub(reg,reg2,reg3); break;
 			case 13:cmd =  sll(reg,reg2,reg3); SimRISCV::sll(reg,reg2,reg3); break;
+			case 14:cmd =  srl(reg,reg2,reg3); SimRISCV::srl(reg,reg2,reg3); break;
 		}
 		uut->INST = cmd;
 		

@@ -112,6 +112,12 @@ uint32_t sll (int rd, int rs1, int rs2){
 	return cmd;
 }
 
+uint32_t srl (int rd, int rs1, int rs2){
+
+	uint32_t cmd = op_inst(rd,rs1,rs2,cpu_typePack::FIMM::SRL);
+	return cmd;
+}
+
 uint32_t srli (int rd, int rs, int shamt){
 
 	uint32_t cmd = imm_inst(rd,rs,shamt,cpu_typePack::FIMM::SRL);
