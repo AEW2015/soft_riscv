@@ -57,7 +57,7 @@ module cpu_top (input logic CLOCK,
 						GPREGS[INST.rtype.rd] <= GPREGS[INST.rtype.rs1] << GPREGS[INST.rtype.rs2];
 					typePack::SRL :
 						if (INST.rtype.funct7[5] == 1)
-							GPREGS[INST.itype.rd] <= $signed(GPREGS[INST.itype.rs1]) >>> INST.itype.imm[4:0];
+							GPREGS[INST.rtype.rd] <= $signed(GPREGS[INST.rtype.rs1]) >>> GPREGS[INST.rtype.rs2];
 						else
 							GPREGS[INST.rtype.rd] <= GPREGS[INST.rtype.rs1] >>  GPREGS[INST.rtype.rs2];
 				endcase

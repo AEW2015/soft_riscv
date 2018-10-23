@@ -24,6 +24,7 @@ public:
 	static void slli(int rd,int rs1,int shamt);
 	static void sll(int rd,int rs1,int rs2);
 	static void srl(int rd,int rs1,int rs2);
+	static void sra(int rd,int rs1,int rs2);
 	static void srli(int rd,int rs1,int shamt);
 	static void srai(int rd,int rs1,int shamt);
 	static void add(int rd,int rs1,int rs2);
