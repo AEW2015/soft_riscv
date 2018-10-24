@@ -35,5 +35,6 @@ uint32_t sltu (int rd, int rs1, int rs2);
 uint32_t sra (int rd, int rs1, int rs2);
 uint32_t srli (int rd, int rs, int shamt);
 uint32_t srai (int rd, int rs, int shamt);
+uint32_t jal (int rd, int imm);
 
 #endif

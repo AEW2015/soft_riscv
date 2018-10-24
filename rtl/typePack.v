@@ -2,6 +2,7 @@ package typePack;
 
 typedef enum logic[6:0]{
 	LUI = 7'b0110111,
+	JAL = 7'b1101111,
 	AUIPC = 7'b0010111,
 	IMM = 7'b0010011,
 	OP = 7'b0110011,
@@ -53,12 +54,24 @@ typedef struct packed
 
 
 } UTYPE_T  /* verilator public */;
+typedef struct packed
+{
+	logic imm20;
+	logic [10:1] imm10_1;
+	logic imm11;
+	logic [19:12] imm19_12;
+	logic [4:0] rd;
+	opcodes opcode;
+
+
+} JTYPE_T  /* verilator public */;
 
 typedef union packed
 {
   ITYPE_T itype;
   RTYPE_T rtype;
   UTYPE_T utype;
+  JTYPE_T jtype;
 } instruction_t /* verilator public */;
 
 

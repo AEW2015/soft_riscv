@@ -3,7 +3,9 @@ module cpu_top (input logic CLOCK,
 			output reg[31:0] PC);
 
 	logic[31:0] sign_extendded_imm;
+	logic[31:0] sign_pc_imm;
 	assign sign_extendded_imm =  { {20{INST.itype.imm [11]}}, INST.itype.imm [11:0] };
+	assign sign_pc_imm = { {12{INST.jtype.imm20}}, INST.jtype.imm19_12 , INST.jtype.imm11, INST.jtype.imm10_1, 1'b0 };
 	reg[31:0] GPREGS[31:0];
 
 
@@ -14,6 +16,10 @@ module cpu_top (input logic CLOCK,
 				GPREGS[INST.utype.rd] <= {INST.utype.imm,{12{1'b0}}};
 			typePack::AUIPC :
 				GPREGS[INST.utype.rd] <= {INST.utype.imm,{12{1'b0}}} + PC;
+			typePack::JAL : begin
+				GPREGS[INST.utype.rd] <= 4 + PC;
+				PC <= PC + sign_pc_imm;
+			end
 			typePack::IMM :
 				unique case(INST.itype.funct3)
 					typePack::OR :

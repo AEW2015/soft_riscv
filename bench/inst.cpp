@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include "inst.h"
+#include "def.h"
 #include "cpu_typePack.h"
 
 uint32_t itype_inst (int rd, int rs, int imm, int fimm, int opcode){
@@ -158,5 +159,18 @@ uint32_t srli (int rd, int rs, int shamt){
 uint32_t srai (int rd, int rs, int shamt){
 	uint16_t tmp = 0x400 | shamt;
 	uint32_t cmd = imm_inst(rd,rs,tmp,cpu_typePack::FIMM::SRL);
+	return cmd;
+}
+
+uint32_t jal (int rd, int imm){
+		uint32_t cmd =  (imm&0x80000)<<12|
+					(imm&0x003FF)<<21|
+					(imm&0x00400)<<10|
+					(imm&0x7F800)<<1|
+					rd<<7|
+					cpu_typePack::opcodes::JAL;
+	//std::cout << HEX imm << std::endl;
+	//std::cout << HEX (imm<<1) << std::endl;
+	//std::cout << HEX cmd << std::endl;
 	return cmd;
 }

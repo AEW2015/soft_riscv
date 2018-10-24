@@ -256,6 +256,17 @@ void SimRISCV::auipc(int rd,int imm){
 	
 
 }
+void SimRISCV::jal(int rd,int imm){
+	lastCmd.str("");
+	lastCmd << "jal "<< rd <<","<< HEX imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->gpregs[rd] = tmp->pc + 4;
+	tmp->pc += imm<<1;
+	
+	
+
+}
 //return error string
 uint32_t SimRISCV::score(cpu* uut,std::stringstream& emesg){
 	SimRISCV* tmp = get_sim();
