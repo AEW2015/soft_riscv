@@ -25,7 +25,11 @@ typedef enum logic[2:0]{
 
 typedef enum logic[2:0]{
 	BEQ = 3'b000,
-	BNE = 3'b001
+	BNE = 3'b001,
+	BGE = 3'b101,
+	BGEU = 3'b111,
+	BLTU = 3'b110,
+	BLT = 3'b100
 } BIMM  /* verilator public */;
 
 localparam ASUB = 7'b0100000;

@@ -40,6 +40,10 @@ public:
 	static void jalr(int rd,int rs, int imm);
 	static void beq(int rs1,int rs2, int imm);
 	static void bne(int rs1,int rs2, int imm);
+	static void blt(int rs1,int rs2, int imm);
+	static void bltu(int rs1,int rs2, int imm);
+	static void bge(int rs1,int rs2, int imm);
+	static void bgeu(int rs1,int rs2, int imm);
 	static uint32_t score(cpu* uut,std::stringstream& emesg);
 };
 

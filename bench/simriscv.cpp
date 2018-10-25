@@ -300,6 +300,54 @@ void SimRISCV::bne(int rs1,int rs2,int imm){
 	else
 		tmp->pc += 4;
 }
+void SimRISCV::blt(int rs1,int rs2,int imm){
+	lastCmd.str("");
+	lastCmd << "blt "<< rs1 <<","<< rs2 <<","<< HEX imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	uint32_t pc_tmp = tmp->pc;
+	if(tmp->gpregs[rs1] < tmp->gpregs[rs2]){
+		tmp->pc += imm<<1;
+	}
+	else
+		tmp->pc += 4;
+}
+void SimRISCV::bltu(int rs1,int rs2,int imm){
+	lastCmd.str("");
+	lastCmd << "bltu "<< rs1 <<","<< rs2 <<","<< HEX imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	uint32_t pc_tmp = tmp->pc;
+	if((uint32_t)tmp->gpregs[rs1] < (uint32_t)tmp->gpregs[rs2]){
+		tmp->pc += imm<<1;
+	}
+	else
+		tmp->pc += 4;
+}
+void SimRISCV::bge(int rs1,int rs2,int imm){
+	lastCmd.str("");
+	lastCmd << "bge "<< rs1 <<","<< rs2 <<","<< HEX imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	uint32_t pc_tmp = tmp->pc;
+	if(tmp->gpregs[rs1] >= tmp->gpregs[rs2]){
+		tmp->pc += imm<<1;
+	}
+	else
+		tmp->pc += 4;
+}
+void SimRISCV::bgeu(int rs1,int rs2,int imm){
+	lastCmd.str("");
+	lastCmd << "bgeu "<< rs1 <<","<< rs2 <<","<< HEX imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	uint32_t pc_tmp = tmp->pc;
+	if((uint32_t)tmp->gpregs[rs1] >= (uint32_t)tmp->gpregs[rs2]){
+		tmp->pc += imm<<1;
+	}
+	else
+		tmp->pc += 4;
+}
 //return error string
 uint32_t SimRISCV::score(cpu* uut,std::stringstream& emesg){
 	SimRISCV* tmp = get_sim();

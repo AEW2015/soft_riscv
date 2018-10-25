@@ -38,6 +38,10 @@ uint32_t srai (int rd, int rs, int shamt);
 uint32_t jalr (int rd, int rs, int imm);
 uint32_t beq (int rs1, int rs2, int imm);
 uint32_t bne (int rs1, int rs2, int imm);
+uint32_t blt (int rs1, int rs2, int imm);
+uint32_t bge (int rs1, int rs2, int imm);
+uint32_t bltu (int rs1, int rs2, int imm);
+uint32_t bgeu (int rs1, int rs2, int imm);
 uint32_t jal (int rd, int imm);
 
 #endif

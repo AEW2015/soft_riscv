@@ -184,6 +184,22 @@ uint32_t bne (int rs1, int rs2, int imm){
 	uint32_t cmd = btype_inst(rs1,rs2,imm,cpu_typePack::BIMM::BNE);
 	return cmd;
 }
+uint32_t blt (int rs1, int rs2, int imm){
+	uint32_t cmd = btype_inst(rs1,rs2,imm,cpu_typePack::BIMM::BLT);
+	return cmd;
+}
+uint32_t bge (int rs1, int rs2, int imm){
+	uint32_t cmd = btype_inst(rs1,rs2,imm,cpu_typePack::BIMM::BGE);
+	return cmd;
+}
+uint32_t bltu (int rs1, int rs2, int imm){
+	uint32_t cmd = btype_inst(rs1,rs2,imm,cpu_typePack::BIMM::BLTU);
+	return cmd;
+}
+uint32_t bgeu (int rs1, int rs2, int imm){
+	uint32_t cmd = btype_inst(rs1,rs2,imm,cpu_typePack::BIMM::BGEU);
+	return cmd;
+}
 
 uint32_t jal (int rd, int imm){
 		uint32_t cmd =  (imm&0x80000)<<12|

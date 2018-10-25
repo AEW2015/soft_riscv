@@ -34,6 +34,18 @@ module cpu_top (input logic CLOCK,
 					typePack::BNE :
 						if(GPREGS[INST.btype.rs1]!=GPREGS[INST.btype.rs2])
 							PC <= PC + sign_extendded_bimm;
+					typePack::BLT :
+						if($signed(GPREGS[INST.btype.rs1])<$signed(GPREGS[INST.btype.rs2]))
+							PC <= PC + sign_extendded_bimm;
+					typePack::BLTU :
+						if(GPREGS[INST.btype.rs1]<GPREGS[INST.btype.rs2])
+							PC <= PC + sign_extendded_bimm;
+					typePack::BGE :
+						if($signed(GPREGS[INST.btype.rs1])>=$signed(GPREGS[INST.btype.rs2]))
+							PC <= PC + sign_extendded_bimm;
+					typePack::BGEU :
+						if(GPREGS[INST.btype.rs1]>=GPREGS[INST.btype.rs2])
+							PC <= PC + sign_extendded_bimm;
 				endcase
 			typePack::IMM :
 				unique case(INST.itype.funct3)
