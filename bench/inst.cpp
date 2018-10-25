@@ -14,6 +14,17 @@ uint32_t itype_inst (int rd, int rs, int imm, int fimm, int opcode){
 					opcode;
 	return cmd;
 }
+uint32_t btype_inst (int rs1, int rs2, int imm, int bimm){
+	uint32_t cmd =  (imm&0x800)<<20|
+					(imm&0x3F0)<<21|
+					rs2<<20|
+					rs1<<15|
+					bimm<<12|
+					(imm&0x00F)<<8|
+					(imm&0x400)>>3|
+					0b1100011;
+	return cmd;
+}
 uint32_t utype_inst (int rd, int imm, int opcode){
 	uint32_t cmd =  imm<<12|
 					rd<<7|
@@ -163,6 +174,14 @@ uint32_t srai (int rd, int rs, int shamt){
 }
 uint32_t jalr (int rd, int rs, int imm){
 	uint32_t cmd = itype_inst(rd,rs,imm,0,cpu_typePack::opcodes::JALR);
+	return cmd;
+}
+uint32_t beq (int rs1, int rs2, int imm){
+	uint32_t cmd = btype_inst(rs1,rs2,imm,cpu_typePack::BIMM::BEQ);
+	return cmd;
+}
+uint32_t bne (int rs1, int rs2, int imm){
+	uint32_t cmd = btype_inst(rs1,rs2,imm,cpu_typePack::BIMM::BNE);
 	return cmd;
 }
 

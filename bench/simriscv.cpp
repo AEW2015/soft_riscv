@@ -275,9 +275,30 @@ void SimRISCV::jalr(int rd,int rs,int imm){
 	uint32_t pc_tmp = tmp->pc;
 	tmp->pc = (imm + tmp->gpregs[rs]) & 0xFFFFFFFE;
 	tmp->gpregs[rd] = pc_tmp + 4;
-	
-	
-
+}
+void SimRISCV::beq(int rs1,int rs2,int imm){
+	lastCmd.str("");
+	lastCmd << "beq "<< rs1 <<","<< rs2 <<","<< HEX imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	uint32_t pc_tmp = tmp->pc;
+	if(tmp->gpregs[rs1] == tmp->gpregs[rs2]){
+		tmp->pc += imm<<1;
+	}
+	else
+		tmp->pc += 4;
+}
+void SimRISCV::bne(int rs1,int rs2,int imm){
+	lastCmd.str("");
+	lastCmd << "bne "<< rs1 <<","<< rs2 <<","<< HEX imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	uint32_t pc_tmp = tmp->pc;
+	if(tmp->gpregs[rs1] != tmp->gpregs[rs2]){
+		tmp->pc += imm<<1;
+	}
+	else
+		tmp->pc += 4;
 }
 //return error string
 uint32_t SimRISCV::score(cpu* uut,std::stringstream& emesg){

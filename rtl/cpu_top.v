@@ -4,7 +4,9 @@ module cpu_top (input logic CLOCK,
 
 	logic[31:0] sign_extendded_imm;
 	logic[31:0] sign_pc_imm;
+	logic[31:0] sign_extendded_bimm;
 	assign sign_extendded_imm =  { {20{INST.itype.imm [11]}}, INST.itype.imm [11:0] };
+	assign sign_extendded_bimm =  { {20{INST.btype.imm12}}, INST.btype.imm11, INST.btype.imm10_5, INST.btype.imm4_1,1'b0 };
 	assign sign_pc_imm = { {12{INST.jtype.imm20}}, INST.jtype.imm19_12 , INST.jtype.imm11, INST.jtype.imm10_1, 1'b0 };
 	reg[31:0] GPREGS[31:0];
 
@@ -24,6 +26,15 @@ module cpu_top (input logic CLOCK,
 				GPREGS[INST.itype.rd] <= 4 + PC;
 				PC <= (GPREGS[INST.itype.rs1] + sign_extendded_imm) & 32'hFFFFFFFE;
 			end
+			typePack::BRANCH :
+				unique case(INST.btype.funct3)
+					typePack::BEQ :
+						if(GPREGS[INST.btype.rs1]==GPREGS[INST.btype.rs2])
+							PC <= PC + sign_extendded_bimm;
+					typePack::BNE :
+						if(GPREGS[INST.btype.rs1]!=GPREGS[INST.btype.rs2])
+							PC <= PC + sign_extendded_bimm;
+				endcase
 			typePack::IMM :
 				unique case(INST.itype.funct3)
 					typePack::OR :

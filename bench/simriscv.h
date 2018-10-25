@@ -38,6 +38,8 @@ public:
 	static void auipc(int rd,int imm);
 	static void jal(int rd,int imm);
 	static void jalr(int rd,int rs, int imm);
+	static void beq(int rs1,int rs2, int imm);
+	static void bne(int rs1,int rs2, int imm);
 	static uint32_t score(cpu* uut,std::stringstream& emesg);
 };
 
