@@ -3,6 +3,7 @@ package typePack;
 typedef enum logic[6:0]{
 	LUI = 7'b0110111,
 	JAL = 7'b1101111,
+	JALR = 7'b1100111,
 	AUIPC = 7'b0010111,
 	IMM = 7'b0010011,
 	OP = 7'b0110011,

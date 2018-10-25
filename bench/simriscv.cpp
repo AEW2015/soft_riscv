@@ -267,6 +267,18 @@ void SimRISCV::jal(int rd,int imm){
 	
 
 }
+void SimRISCV::jalr(int rd,int rs,int imm){
+	lastCmd.str("");
+	lastCmd << "jalr "<< rd <<","<< rs <<","<< HEX imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	uint32_t pc_tmp = tmp->pc;
+	tmp->pc = (imm + tmp->gpregs[rs]) & 0xFFFFFFFE;
+	tmp->gpregs[rd] = pc_tmp + 4;
+	
+	
+
+}
 //return error string
 uint32_t SimRISCV::score(cpu* uut,std::stringstream& emesg){
 	SimRISCV* tmp = get_sim();

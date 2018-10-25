@@ -20,6 +20,10 @@ module cpu_top (input logic CLOCK,
 				GPREGS[INST.utype.rd] <= 4 + PC;
 				PC <= PC + sign_pc_imm;
 			end
+			typePack::JALR : begin
+				GPREGS[INST.itype.rd] <= 4 + PC;
+				PC <= (GPREGS[INST.itype.rs1] + sign_extendded_imm) & 32'hFFFFFFFE;
+			end
 			typePack::IMM :
 				unique case(INST.itype.funct3)
 					typePack::OR :

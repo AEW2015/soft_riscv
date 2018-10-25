@@ -37,6 +37,7 @@ public:
 	static void lui(int rd,int imm);
 	static void auipc(int rd,int imm);
 	static void jal(int rd,int imm);
+	static void jalr(int rd,int rs, int imm);
 	static uint32_t score(cpu* uut,std::stringstream& emesg);
 };
 

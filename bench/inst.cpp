@@ -161,6 +161,10 @@ uint32_t srai (int rd, int rs, int shamt){
 	uint32_t cmd = imm_inst(rd,rs,tmp,cpu_typePack::FIMM::SRL);
 	return cmd;
 }
+uint32_t jalr (int rd, int rs, int imm){
+	uint32_t cmd = itype_inst(rd,rs,imm,0,cpu_typePack::opcodes::JALR);
+	return cmd;
+}
 
 uint32_t jal (int rd, int imm){
 		uint32_t cmd =  (imm&0x80000)<<12|
