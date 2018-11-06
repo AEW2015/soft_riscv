@@ -213,6 +213,14 @@ uint32_t sw (int rs1, int rs2, int imm){
 	uint32_t cmd = stype_inst(rs1,rs2,imm,cpu_typePack::SIMM::WORD);
 	return cmd;
 }
+uint32_t sh (int rs1, int rs2, int imm){
+	uint32_t cmd = stype_inst(rs1,rs2,imm,cpu_typePack::SIMM::SHORT);
+	return cmd;
+}
+uint32_t sb (int rs1, int rs2, int imm){
+	uint32_t cmd = stype_inst(rs1,rs2,imm,cpu_typePack::SIMM::BYTE);
+	return cmd;
+}
 
 uint32_t jal (int rd, int imm){
 		uint32_t cmd =  (imm&0x80000)<<12|

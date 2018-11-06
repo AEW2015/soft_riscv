@@ -368,6 +368,30 @@ void SimRISCV::sw(int rs1,int rs2,int imm){
 	tmp->addr =  tmp->gpregs[rs1] + imm;
 
 }
+void SimRISCV::sh(int rs1,int rs2,int imm){
+	lastCmd.str("");
+	lastCmd << "sh "<< rs1 <<","<< rs2 <<","<< HEX imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->write_en = 1;
+	tmp->byte_en = 0x3;
+	tmp->write_data = tmp->gpregs[rs2];
+	tmp->addr =  tmp->gpregs[rs1] + imm;
+
+}
+void SimRISCV::sb(int rs1,int rs2,int imm){
+	lastCmd.str("");
+	lastCmd << "sb "<< rs1 <<","<< rs2 <<","<< HEX imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->write_en = 1;
+	tmp->byte_en = 0x1;
+	tmp->write_data = tmp->gpregs[rs2];
+	tmp->addr =  tmp->gpregs[rs1] + imm;
+
+}
 //return error string
 uint32_t SimRISCV::score(cpu* uut,std::stringstream& emesg){
 	SimRISCV* tmp = get_sim();

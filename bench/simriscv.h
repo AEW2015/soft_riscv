@@ -50,6 +50,8 @@ public:
 	static void bge(int rs1,int rs2, int imm);
 	static void bgeu(int rs1,int rs2, int imm);
 	static void sw(int rs1,int rs2, int imm);
+	static void sh(int rs1,int rs2, int imm);
+	static void sb(int rs1,int rs2, int imm);
 	static uint32_t score(cpu* uut,std::stringstream& emesg);
 };
 

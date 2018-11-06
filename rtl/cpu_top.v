@@ -105,15 +105,19 @@ module cpu_top (input logic CLOCK,
 							GPREGS[INST.rtype.rd] <= GPREGS[INST.rtype.rs1] >>  GPREGS[INST.rtype.rs2];
 				endcase
 			typePack::S :
+			begin
+				write_en <= 1;
+				write_data <= GPREGS[INST.stype.rs2];
+				addr <= GPREGS[INST.stype.rs1]+sign_extendded_simm;
 				unique case(INST.stype.funct3)
 					typePack::WORD :
-					begin
-						write_en <= 1;
 						byte_en <= 4'b1111;
-						write_data <= GPREGS[INST.stype.rs2];
-						addr <= GPREGS[INST.stype.rs1]+sign_extendded_simm;
-					end
+					typePack::SHORT :
+						byte_en <= 4'b0011;
+					typePack::BYTE :
+						byte_en <= 4'b0001;
 				endcase
+			end
 			typePack::OMM :
 				GPREGS[1] <= 0;
 			default :
