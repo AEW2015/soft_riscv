@@ -13,6 +13,11 @@ private:
 	static SimRISCV *get_sim();
 	uint32_t pc;
 	int32_t gpregs[32];	
+	uint8_t write_en;
+	uint8_t byte_en;
+	uint32_t write_data;
+	uint32_t addr;
+
 public:
 	static void reset();
 	static void ori(int rd,int rs1,int imm);
@@ -44,6 +49,7 @@ public:
 	static void bltu(int rs1,int rs2, int imm);
 	static void bge(int rs1,int rs2, int imm);
 	static void bgeu(int rs1,int rs2, int imm);
+	static void sw(int rs1,int rs2, int imm);
 	static uint32_t score(cpu* uut,std::stringstream& emesg);
 };
 

@@ -42,6 +42,7 @@ uint32_t blt (int rs1, int rs2, int imm);
 uint32_t bge (int rs1, int rs2, int imm);
 uint32_t bltu (int rs1, int rs2, int imm);
 uint32_t bgeu (int rs1, int rs2, int imm);
+uint32_t sw (int rs1, int rs2, int imm);
 uint32_t jal (int rd, int imm);
 
 #endif

@@ -10,6 +10,10 @@ SimRISCV::SimRISCV(){
 	for(uint8_t i = 0;i<32;i++){
 		gpregs[i]=0;
 	}
+	write_en = 0;
+	byte_en = 0;
+	write_data = 0;
+	addr = 0;
 
 }
 SimRISCV * SimRISCV::get_sim(){
@@ -26,6 +30,10 @@ void SimRISCV::reset(){
 	for(uint8_t i = 0;i<32;i++){
 		tmp->gpregs[i]=0;
 	}
+	tmp->write_en = 0;
+	tmp->byte_en = 0;
+	tmp->write_data = 0;
+	tmp->addr = 0;
 }
 void SimRISCV::ori(int rd,int rs1,int imm){
 	SimRISCV* tmp = get_sim();
@@ -348,6 +356,18 @@ void SimRISCV::bgeu(int rs1,int rs2,int imm){
 	else
 		tmp->pc += 4;
 }
+void SimRISCV::sw(int rs1,int rs2,int imm){
+	lastCmd.str("");
+	lastCmd << "sw "<< rs1 <<","<< rs2 <<","<< HEX imm;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->write_en = 1;
+	tmp->byte_en = 0xF;
+	tmp->write_data = tmp->gpregs[rs2];
+	tmp->addr =  tmp->gpregs[rs1] + imm;
+
+}
 //return error string
 uint32_t SimRISCV::score(cpu* uut,std::stringstream& emesg){
 	SimRISCV* tmp = get_sim();
@@ -367,6 +387,29 @@ uint32_t SimRISCV::score(cpu* uut,std::stringstream& emesg){
 			errors++;
 		}
 	}
+	if(uut->write_en!=tmp->write_en){
+		emesg << "write_en = " << HEX uut->write_en << " write_en = " << HEX tmp->write_en << std::endl;
+		errors++;
+	}
+	if(uut->byte_en!=tmp->byte_en){
+		emesg << "byte_en = " << HEX uut->byte_en << " byte_en = " << HEX tmp->byte_en << std::endl;
+		errors++;
+	}
+	if(uut->write_data!=tmp->write_data){
+		emesg << "write_data = " << HEX uut->write_data << " write_data = " << HEX tmp->write_data << std::endl;
+		errors++;
+	}
+	
+	if(uut->addr!=tmp->addr){
+		emesg << "addr = " << HEX uut->addr << " addr = " << HEX tmp->addr << std::endl;
+		errors++;
+	}
+
+
+	tmp->write_en = 0;
+	tmp->byte_en = 0;
+	tmp->write_data = 0;
+	tmp->addr = 0;
 
 	return errors;
 }

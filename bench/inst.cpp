@@ -25,6 +25,15 @@ uint32_t btype_inst (int rs1, int rs2, int imm, int bimm){
 					0b1100011;
 	return cmd;
 }
+uint32_t stype_inst (int rs1, int rs2, int imm, int simm){
+	uint32_t cmd =  (imm&0xFE0)<<20|
+					rs2<<20|
+					rs1<<15|
+					simm<<12|
+					(imm&0x01F)<<7|
+					0b0100011;
+	return cmd;
+}
 uint32_t utype_inst (int rd, int imm, int opcode){
 	uint32_t cmd =  imm<<12|
 					rd<<7|
@@ -198,6 +207,10 @@ uint32_t bltu (int rs1, int rs2, int imm){
 }
 uint32_t bgeu (int rs1, int rs2, int imm){
 	uint32_t cmd = btype_inst(rs1,rs2,imm,cpu_typePack::BIMM::BGEU);
+	return cmd;
+}
+uint32_t sw (int rs1, int rs2, int imm){
+	uint32_t cmd = stype_inst(rs1,rs2,imm,cpu_typePack::SIMM::WORD);
 	return cmd;
 }
 

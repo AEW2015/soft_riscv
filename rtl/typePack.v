@@ -8,6 +8,7 @@ typedef enum logic[6:0]{
 	IMM = 7'b0010011,
 	BRANCH = 7'b1100011,
 	OP = 7'b0110011,
+	S = 7'b0100011,
 	OMM = 7'b0000011
 }
 opcodes /* verilator public */;
@@ -32,10 +33,27 @@ typedef enum logic[2:0]{
 	BLT = 3'b100
 } BIMM  /* verilator public */;
 
+typedef enum logic[2:0]{
+	BYTE = 3'b000,
+	SHORT = 3'b001,
+	WORD = 3'b010
+} SIMM  /* verilator public */;
+
 localparam ASUB = 7'b0100000;
 
 
 
+typedef struct packed
+{
+	logic[11:5] imm11_5;
+	logic [4:0] rs2;
+	logic [4:0] rs1;
+	logic [2:0] funct3;
+	logic [4:0] imm4_0;
+	opcodes opcode;
+
+
+} STYPE_T  /* verilator public */;
 typedef struct packed
 {
 	logic[11:0] imm;
@@ -93,6 +111,7 @@ typedef struct packed
 typedef union packed
 {
   ITYPE_T itype;
+  STYPE_T stype;
   RTYPE_T rtype;
   UTYPE_T utype;
   JTYPE_T jtype;
