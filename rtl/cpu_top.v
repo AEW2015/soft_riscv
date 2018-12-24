@@ -1,6 +1,8 @@
 module cpu_top (input logic CLOCK,
 			input typePack::instruction_t INST,
+			input  logic [31:0] read_data,
 			output logic write_en,
+			output logic read_en,
 			output logic [3:0] byte_en,
 			output logic [31:0] write_data,
 			output logic [31:0] addr,
@@ -20,6 +22,7 @@ module cpu_top (input logic CLOCK,
 	always_ff @(posedge CLOCK) begin
 		PC <= PC +4;
 		write_en <= 0;
+		read_en <= 0;
 		byte_en <= 0;
 		write_data <= 0;
 		addr <= 0;
@@ -110,23 +113,56 @@ module cpu_top (input logic CLOCK,
 				write_data <= GPREGS[INST.stype.rs2];
 				addr <= GPREGS[INST.stype.rs1]+sign_extendded_simm;
 				unique case(INST.stype.funct3)
-					typePack::WORD :
+					typePack::SWORD :
 						byte_en <= 4'b1111;
-					typePack::SHORT :
+					typePack::SSHORT :
 						byte_en <= 4'b0011;
-					typePack::BYTE :
+					typePack::SBYTE :
 						byte_en <= 4'b0001;
 				endcase
 			end
-			typePack::OMM :
-				GPREGS[1] <= 0;
+			typePack::L :
+			begin
+				addr <= GPREGS[INST.itype.rs1]+sign_extendded_imm;
+				read_en <= 1;
+				unique case (INST.itype.funct3)
+					typePack::LBYTE :
+						byte_en <= 4'b0001;
+					typePack::LSHORT :
+						byte_en <= 4'b0011;
+					typePack::LWORD :
+						byte_en <= 4'b1111;
+					typePack::LUBYTE :
+						byte_en <= 4'b0001;
+					typePack::LUSHORT :
+						byte_en <= 4'b0011;
+				endcase
+			end
 			default :
 				GPREGS[1] <= 0;
 		endcase
 		GPREGS[0] <= 0;
 	end
 
-
-
+	always_ff @(negedge CLOCK) begin
+		unique case(INST.itype.opcode)
+			typePack::L :
+			begin
+				unique case (INST.itype.funct3)
+					typePack::LBYTE :
+						GPREGS[INST.itype.rd] <=  { {24{read_data [7]}}, read_data [7:0] };
+					typePack::LSHORT :
+						GPREGS[INST.itype.rd] <=  { {16{read_data [15]}}, read_data [15:0] };
+					typePack::LWORD :
+						GPREGS[INST.itype.rd] <=   read_data;
+					typePack::LUBYTE :
+						GPREGS[INST.itype.rd] <=  { {24{1'b0}}, read_data [7:0] };
+					typePack::LUSHORT :
+						GPREGS[INST.itype.rd] <=  { {16{1'b0}}, read_data [15:0] };
+				endcase
+			end
+		endcase
+	GPREGS[0] <= 0;
+	end
 endmodule
 

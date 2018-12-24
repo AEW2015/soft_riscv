@@ -9,7 +9,7 @@ typedef enum logic[6:0]{
 	BRANCH = 7'b1100011,
 	OP = 7'b0110011,
 	S = 7'b0100011,
-	OMM = 7'b0000011
+	L = 7'b0000011
 }
 opcodes /* verilator public */;
 
@@ -34,10 +34,18 @@ typedef enum logic[2:0]{
 } BIMM  /* verilator public */;
 
 typedef enum logic[2:0]{
-	BYTE = 3'b000,
-	SHORT = 3'b001,
-	WORD = 3'b010
+	SBYTE = 3'b000,
+	SSHORT = 3'b001,
+	SWORD = 3'b010
 } SIMM  /* verilator public */;
+
+typedef enum logic[2:0]{
+	LBYTE = 3'b000,
+	LSHORT = 3'b001,
+	LWORD = 3'b010,
+	LUBYTE = 3'b100,
+	LUSHORT = 3'b101
+} LIMM  /* verilator public */;
 
 localparam ASUB = 7'b0100000;
 

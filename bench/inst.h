@@ -45,6 +45,11 @@ uint32_t bgeu (int rs1, int rs2, int imm);
 uint32_t sw (int rs1, int rs2, int imm);
 uint32_t sh (int rs1, int rs2, int imm);
 uint32_t sb (int rs1, int rs2, int imm);
+uint32_t lb (int rd, int rs1, int imm);
+uint32_t lbu (int rd, int rs1, int imm);
+uint32_t lh (int rd, int rs1, int imm);
+uint32_t lhu (int rd, int rs1, int imm);
+uint32_t lw (int rd, int rs1, int imm);
 uint32_t jal (int rd, int imm);
 
 #endif

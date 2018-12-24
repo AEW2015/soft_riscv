@@ -11,12 +11,13 @@ class SimRISCV
 private:
 	SimRISCV();
 	static SimRISCV *get_sim();
-	uint32_t pc;
-	int32_t gpregs[32];	
-	uint8_t write_en;
-	uint8_t byte_en;
-	uint32_t write_data;
-	uint32_t addr;
+	int pc;
+	int gpregs[32];	
+	int write_en;
+	int read_en;
+	int byte_en;
+	int write_data;
+	int addr;
 
 public:
 	static void reset();
@@ -52,6 +53,11 @@ public:
 	static void sw(int rs1,int rs2, int imm);
 	static void sh(int rs1,int rs2, int imm);
 	static void sb(int rs1,int rs2, int imm);
+	static void lb (int rd, int rs1, int imm, int data);
+	static void lbu (int rd, int rs1, int imm, int data);
+	static void lh (int rd, int rs1, int imm, int data);
+	static void lhu (int rd, int rs1, int imm, int data);
+	static void lw (int rd, int rs1, int imm, int data);
 	static uint32_t score(cpu* uut,std::stringstream& emesg);
 };
 

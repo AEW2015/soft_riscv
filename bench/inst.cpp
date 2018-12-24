@@ -210,15 +210,35 @@ uint32_t bgeu (int rs1, int rs2, int imm){
 	return cmd;
 }
 uint32_t sw (int rs1, int rs2, int imm){
-	uint32_t cmd = stype_inst(rs1,rs2,imm,cpu_typePack::SIMM::WORD);
+	uint32_t cmd = stype_inst(rs1,rs2,imm,cpu_typePack::SIMM::SWORD);
 	return cmd;
 }
 uint32_t sh (int rs1, int rs2, int imm){
-	uint32_t cmd = stype_inst(rs1,rs2,imm,cpu_typePack::SIMM::SHORT);
+	uint32_t cmd = stype_inst(rs1,rs2,imm,cpu_typePack::SIMM::SSHORT);
 	return cmd;
 }
 uint32_t sb (int rs1, int rs2, int imm){
-	uint32_t cmd = stype_inst(rs1,rs2,imm,cpu_typePack::SIMM::BYTE);
+	uint32_t cmd = stype_inst(rs1,rs2,imm,cpu_typePack::SIMM::SBYTE);
+	return cmd;
+}
+uint32_t lb (int rd, int rs1, int imm){
+	uint32_t cmd = itype_inst(rd,rs1,imm,cpu_typePack::LIMM::LBYTE,cpu_typePack::opcodes::L);
+	return cmd;
+}
+uint32_t lbu (int rd, int rs1, int imm){
+	uint32_t cmd = itype_inst(rd,rs1,imm,cpu_typePack::LIMM::LUBYTE,cpu_typePack::opcodes::L);
+	return cmd;
+}
+uint32_t lh (int rd, int rs1, int imm){
+	uint32_t cmd = itype_inst(rd,rs1,imm,cpu_typePack::LIMM::LSHORT,cpu_typePack::opcodes::L);
+	return cmd;
+}
+uint32_t lhu (int rd, int rs1, int imm){
+	uint32_t cmd = itype_inst(rd,rs1,imm,cpu_typePack::LIMM::LUSHORT,cpu_typePack::opcodes::L);
+	return cmd;
+}
+uint32_t lw (int rd, int rs1, int imm){
+	uint32_t cmd = itype_inst(rd,rs1,imm,cpu_typePack::LIMM::LWORD,cpu_typePack::opcodes::L);
 	return cmd;
 }
 

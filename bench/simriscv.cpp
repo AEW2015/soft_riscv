@@ -11,6 +11,7 @@ SimRISCV::SimRISCV(){
 		gpregs[i]=0;
 	}
 	write_en = 0;
+	read_en = 0;
 	byte_en = 0;
 	write_data = 0;
 	addr = 0;
@@ -31,6 +32,7 @@ void SimRISCV::reset(){
 		tmp->gpregs[i]=0;
 	}
 	tmp->write_en = 0;
+	tmp->read_en = 0;
 	tmp->byte_en = 0;
 	tmp->write_data = 0;
 	tmp->addr = 0;
@@ -392,45 +394,116 @@ void SimRISCV::sb(int rs1,int rs2,int imm){
 	tmp->addr =  tmp->gpregs[rs1] + imm;
 
 }
+void SimRISCV::lb(int rd,int rs1,int imm,int data){
+	lastCmd.str("");
+	lastCmd << "lb "<< rd <<","<< rs1 <<","<< HEX imm <<":=" << HEX data;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->read_en = 1;
+	tmp->byte_en = 0x1;
+	tmp->addr =  tmp->gpregs[rs1] + imm;
+	if(data&0x80)
+		tmp->gpregs[rd] = 0xFFFFFF00|(data&0xFF);
+	else
+		tmp->gpregs[rd] = (data&0xFF);
+
+}
+void SimRISCV::lbu(int rd,int rs1,int imm,int data){
+	lastCmd.str("");
+	lastCmd << "lbu "<< rd <<","<< rs1 <<","<< HEX imm <<":=" << HEX data;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->read_en = 1;
+	tmp->byte_en = 0x1;
+	tmp->addr =  tmp->gpregs[rs1] + imm;
+	tmp->gpregs[rd] = (data&0xFF);
+
+}
+void SimRISCV::lh(int rd,int rs1,int imm,int data){
+	lastCmd.str("");
+	lastCmd << "lh "<< rd <<","<< rs1 <<","<< HEX imm <<":=" << HEX data;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->read_en = 1;
+	tmp->byte_en = 0x3;
+	tmp->addr =  tmp->gpregs[rs1] + imm;
+	if(data&0x8000)
+		tmp->gpregs[rd] = 0xFFFF0000|(data&0xFFFF);
+	else
+		tmp->gpregs[rd] = (data&0xFFFF);
+
+}
+void SimRISCV::lhu(int rd,int rs1,int imm,int data){
+	lastCmd.str("");
+	lastCmd << "lhu "<< rd <<","<< rs1 <<","<< HEX imm <<":=" << HEX data;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->read_en = 1;
+	tmp->byte_en = 0x3;
+	tmp->addr =  tmp->gpregs[rs1] + imm;
+	tmp->gpregs[rd] = (data&0xFFFF);
+
+}
+void SimRISCV::lw(int rd,int rs1,int imm,int data){
+	lastCmd.str("");
+	lastCmd << "lw "<< rd <<","<< rs1 <<","<< HEX imm <<":=" << HEX data;
+	if (V) std::cout << lastCmd.str() << std::endl;
+	SimRISCV* tmp = get_sim();
+	tmp->pc += 4;
+	tmp->read_en = 1;
+	tmp->byte_en = 0xF;
+	tmp->addr =  tmp->gpregs[rs1] + imm;
+	tmp->gpregs[rd] = data;
+
+}
 //return error string
 uint32_t SimRISCV::score(cpu* uut,std::stringstream& emesg){
 	SimRISCV* tmp = get_sim();
 	uint32_t errors = 0;
 	emesg << "Last Cmd => " << lastCmd.str() << std::endl;
-	emesg << HEX uut->PC<< std::endl;
+	emesg << HEX (int)uut->PC<< std::endl;
 	if(uut->PC!=tmp->pc){
 		//emesg << "Bad PC" << "\n";
-		emesg << "Pc = " << HEX uut->PC << " expected = " << HEX tmp->pc << std::endl;
+		emesg << "Pc = " << HEX (int)uut->PC << " expected = " << HEX tmp->pc << std::endl;
 		errors++;
 	}
 	for(int i = 0;i<32;i++){
 		if(uut->cpu_top__DOT__GPREGS[i]!=tmp->gpregs[i]){
 			//emesg.append("Bad reg");
 			emesg << "GPREG["<< L2 i <<"] = ";
-			emesg << HEX uut->cpu_top__DOT__GPREGS[i] << " expected = "<< HEX tmp->gpregs[i] << std::endl;
+			emesg << HEX (int)uut->cpu_top__DOT__GPREGS[i] << " expected = "<< HEX tmp->gpregs[i] << std::endl;
 			errors++;
 		}
 	}
 	if(uut->write_en!=tmp->write_en){
-		emesg << "write_en = " << HEX uut->write_en << " write_en = " << HEX tmp->write_en << std::endl;
+		emesg << "write_en = " << HEX (int)uut->write_en << " write_en = " << HEX tmp->write_en << std::endl;
+		errors++;
+	}
+	if(uut->read_en!=tmp->read_en){
+		emesg << "read_en = " << HEX (int)uut->read_en << " read_en = " << HEX tmp->read_en << std::endl;
 		errors++;
 	}
 	if(uut->byte_en!=tmp->byte_en){
-		emesg << "byte_en = " << HEX uut->byte_en << " byte_en = " << HEX tmp->byte_en << std::endl;
+		emesg << "byte_en = " << HEX (int)uut->byte_en << " byte_en = " << HEX tmp->byte_en << std::endl;
 		errors++;
 	}
 	if(uut->write_data!=tmp->write_data){
-		emesg << "write_data = " << HEX uut->write_data << " write_data = " << HEX tmp->write_data << std::endl;
+		emesg << "write_data = " << HEX (int)uut->write_data << " write_data = " << HEX tmp->write_data << std::endl;
 		errors++;
 	}
 	
 	if(uut->addr!=tmp->addr){
-		emesg << "addr = " << HEX uut->addr << " addr = " << HEX tmp->addr << std::endl;
+		emesg << "addr = " << HEX (int)uut->addr << " addr = " << HEX tmp->addr << std::endl;
 		errors++;
 	}
 
 
 	tmp->write_en = 0;
+	tmp->read_en = 0;
 	tmp->byte_en = 0;
 	tmp->write_data = 0;
 	tmp->addr = 0;

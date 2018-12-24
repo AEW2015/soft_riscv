@@ -56,7 +56,7 @@ int main (int argc, char** argv)
 
 	}
 
-	uut->CLOCK = 1;
+	uut->CLOCK = 0;
 
 
 	for(int cycle = 1;cycle<1000000;cycle++)
@@ -97,13 +97,14 @@ int main (int argc, char** argv)
 
 }
 
-#define CASES 32
+#define CASES 37
 
 void excute_instr(){
 		int randCase = rand()%CASES;
 		int reg = rand()%32;
 		int reg2 = rand()%32;
 		int reg3 = rand()%32;
+		int read_data = rand();
 		int value = rand()%4096;
 		int shamt = rand()%32;
 		int value20 = rand()%1048576 - (1048576/2);
@@ -143,8 +144,15 @@ void excute_instr(){
 			case 29:cmd =  sw(reg,reg2,svalue); SimRISCV::sw(reg,reg2,svalue); break;
 			case 30:cmd =  sh(reg,reg2,svalue); SimRISCV::sh(reg,reg2,svalue); break;
 			case 31:cmd =  sb(reg,reg2,svalue); SimRISCV::sb(reg,reg2,svalue); break;
+			case 32:cmd =  lb(reg,reg2,svalue); SimRISCV::lb(reg,reg2,svalue,read_data); break;
+			case 33:cmd =  lh(reg,reg2,svalue); SimRISCV::lh(reg,reg2,svalue,read_data); break;
+			case 34:cmd =  lw(reg,reg2,svalue); SimRISCV::lw(reg,reg2,svalue,read_data); break;
+			case 35:cmd =  lbu(reg,reg2,svalue); SimRISCV::lbu(reg,reg2,svalue,read_data); break;
+			case 36:cmd =  lhu(reg,reg2,svalue); SimRISCV::lhu(reg,reg2,svalue,read_data); break;
 		}
+		uut->read_data = read_data;
 		uut->INST = cmd;
+		uut->eval();
 		
 
 		if (tfp != NULL)
