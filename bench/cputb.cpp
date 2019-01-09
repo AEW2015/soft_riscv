@@ -4,6 +4,7 @@
 #include "verilated_vcd_c.h"
 #include "simriscv.h"
 #include <iostream>
+#include <fstream>
 #include <sstream>  
 #include <string>
 #include <cstdlib>
@@ -30,12 +31,42 @@ void assertSignal (uint32_t a, uint32_t b){
 		}
 }
 
+void test_instr();
 void excute_instr();
+#define ASIZE 0x4000
+static int instructionM [ASIZE];
+//static int dataM [2];
+static bool done_flag = 0;
 
 int main (int argc, char** argv)
 {
 	bool vcdTrace = true;
 	tfp = NULL;
+	int pflag = 0;
+	long long maxcycles = 1000000;
+	int c;
+	  while ((c = getopt (argc, argv, "pl:")) != -1)
+		switch (c)
+		{
+		case 'p':
+			pflag = 1;
+			break;
+		case 'l':
+			maxcycles = std::stoll(optarg);
+			break;
+		case '?':
+			if (optopt == 'l')
+			fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+			else if (isprint (optopt))
+			fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+			else
+			fprintf (stderr,
+					"Unknown option character `\\x%x'.\n",
+					optopt);
+			return 1;
+		default:
+			abort ();
+      }
 
 	Verilated::commandArgs(argc, argv);
 	uut = new cpu;
@@ -58,16 +89,61 @@ int main (int argc, char** argv)
 
 	uut->CLOCK = 0;
 
+	// instructionM[0] = 0x00108093;//lbu(1,0,0);
+	// instructionM[1] = 0x001080b3;//sw(0,1,4);
+	// instructionM[2] = 0x00102023;
+	// instructionM[3] = 0x00002083;
 
-	for(int cycle = 1;cycle<1000000;cycle++)
+	instructionM[0] = 0x800007b7;//lbu(1,0,0);
+	instructionM[1] = 0x03200713;//sw(0,1,4);
+	instructionM[2] = 0x02e7ae23;
+
+	instructionM[3] = 0x100007b7;//lbu(1,0,0);
+	instructionM[4] = 0x03100713;//sw(0,1,4);
+	instructionM[5] = 0x00e7a023;
+
+	instructionM[6] = 0x100007b7;//lbu(1,0,0);
+	instructionM[7] = 0x03000713;//sw(0,1,4);
+	instructionM[8] = 0x00e7a023;
+
+	instructionM[9] = 0x200007b7;//lbu(1,0,0);
+	instructionM[10] = 0x03000713;//sw(0,1,4);
+	instructionM[11] = 0x00e7a023;
+
+	if(pflag){
+		std::ifstream ifs("test.mem");
+
+		std::string line;
+		int index = 0;
+		while(std::getline(ifs, line))
+		{
+			std::istringstream iss(line.c_str());
+			unsigned int a,b;
+			iss >>  std::hex >>  a;
+			instructionM[index++]=a;
+		}
+
+	}
+
+	for(long long cycle = 1;cycle<maxcycles;cycle++)
 	{
 
-		excute_instr();
-		std::stringstream str;
-		if(SimRISCV::score(uut,str)){
-			std::cout << "Errors @" <<  sc_time_stamp() << std::endl << str.str() << std::endl;
-			break;
+		if(pflag){
+			excute_instr();
+			if(done_flag){
+				printf("\nExit\n");
+				break;
+			}
 		}
+		else{
+			test_instr();
+			std::stringstream str;
+			if(SimRISCV::score(uut,str)){
+				std::cout << "Errors @" <<  sc_time_stamp() << std::endl << str.str() << std::endl;
+				break;
+			}
+		}
+		
 			
 	}
 	if (tfp != NULL)
@@ -86,6 +162,12 @@ int main (int argc, char** argv)
 
 	uut->final();
 
+
+	if(pflag&!done_flag){
+	 printf("program did not finish\n");
+	}
+
+
 	if(tfp != NULL)
 	{
 		tfp->close();
@@ -98,8 +180,135 @@ int main (int argc, char** argv)
 }
 
 #define CASES 37
-
 void excute_instr(){
+		
+		uut->read_data = 0xFF;
+		int cmd = instructionM[((unsigned)uut->PC>>2)%ASIZE];
+		//printf("0x%08X\n",((unsigned)uut->PC));
+		//printf("%d\n",((unsigned)uut->PC>>2)%ASIZE);
+		//printf("0x%08X\n",cmd);
+		//printf("0x%08X\n",uut->cpu_top__DOT__GPREGS[0]);
+		//printf("0x%08X\n",uut->cpu_top__DOT__GPREGS[1]);
+		//printf("0x%08X\n",uut->cpu_top__DOT__GPREGS[2]);
+		//printf("0x%08X\n",instructionM[0x3b6c]);
+		//getchar();
+		uut->INST = cmd;
+		uut->eval();
+		
+		if(uut->write_en){
+			if(uut->addr == 0x10000000){
+				char output = (char) (unsigned) uut->write_data;
+				printf("%c",output);
+			}
+			else if(uut->addr == 0x20000000){
+				done_flag = 1;
+			}
+			else{
+			unsigned int tmp_data = instructionM[((unsigned)uut->addr>>2)%ASIZE];
+			int tmp_write= uut->write_data;
+			if(uut->byte_en==0xF)
+			instructionM[((unsigned)uut->addr>>2)%ASIZE] = tmp_write;
+			else if(uut->byte_en==0x3){
+				if(uut->addr%4==0){
+					tmp_data = tmp_data & 0xFFFF0000;
+					tmp_write = tmp_write & 0xFFFF;
+					tmp_write = tmp_data | tmp_write;
+					instructionM[((unsigned)uut->addr>>2)%ASIZE] = tmp_write;
+				}else{
+					tmp_data = tmp_data & 0xFFFF;
+					tmp_write = (tmp_write & 0xFFFF)<<16;
+					tmp_write = tmp_data | tmp_write;
+					instructionM[((unsigned)uut->addr>>2)%ASIZE] = tmp_write;	
+				}
+			}else{
+				if(uut->addr%4==0){
+					tmp_data = tmp_data & 0xFFFFFF00;
+					tmp_write = tmp_write & 0xFF;
+					tmp_write = tmp_data | tmp_write;
+					instructionM[((unsigned)uut->addr>>2)%ASIZE] = tmp_write;
+
+				}else if(uut->addr%4==1){
+					tmp_data = tmp_data & 0xFFFF00FF;
+					tmp_write = (tmp_write & 0xFF)<<8;
+					tmp_write = tmp_data | tmp_write;
+					instructionM[((unsigned)uut->addr>>2)%ASIZE] = tmp_write;
+
+				}else if(uut->addr%4==2){
+					tmp_data = tmp_data & 0xFF00FFFF;
+					tmp_write = (tmp_write & 0xFF)<<16;
+					tmp_write = tmp_data | tmp_write;
+					instructionM[((unsigned)uut->addr>>2)%ASIZE] = tmp_write;
+
+				}else{
+					tmp_data = tmp_data & 0xFFFFFF;
+					tmp_write = (tmp_write & 0xFF)<<24;
+					tmp_write = tmp_data | tmp_write;
+					instructionM[((unsigned)uut->addr>>2)%ASIZE] = tmp_write;
+				}
+
+
+			}
+
+			}
+
+			
+		}
+		
+		//printf("0x%08X\n\r",instructionM[15]);
+
+		if (tfp != NULL)
+			tfp->dump(main_time);
+		uut->CLOCK = uut->CLOCK ? 0 : 1;
+		uut->eval();
+		main_time++;
+
+		//check for read
+		if(uut->read_en){
+			int tmp_data = instructionM[((unsigned)uut->addr>>2)%ASIZE];
+			if(uut->byte_en==0xF)
+			uut->read_data = tmp_data;
+			else if(uut->byte_en==0x3){
+				if(uut->addr%4==0){
+					tmp_data = tmp_data & 0xFFFF;
+					uut->read_data = tmp_data;
+				}else{
+					tmp_data = (tmp_data & 0xFFFF0000)>>16;
+					uut->read_data = tmp_data;	
+				}
+			}else{
+				if(uut->addr%4==0){
+					tmp_data = tmp_data & 0xFF;
+					uut->read_data = tmp_data;
+
+				}else if(uut->addr%4==1){
+					tmp_data = (tmp_data & 0xFF00)>>8;
+					uut->read_data = tmp_data;	
+
+				}else if(uut->addr%4==2){
+					tmp_data = (tmp_data & 0xFF0000)>>16;
+					uut->read_data = tmp_data;	
+
+				}else{
+					tmp_data = (tmp_data & 0xFF000000)>>24;
+					uut->read_data = tmp_data;	
+				}
+
+
+			}
+			
+		}
+
+
+		if (tfp != NULL)
+			tfp->dump(main_time);
+		uut->CLOCK = uut->CLOCK ? 0 : 1;
+		uut->eval();
+		main_time++;
+
+		
+		
+}
+void test_instr(){
 		int randCase = rand()%CASES;
 		int reg = rand()%32;
 		int reg2 = rand()%32;

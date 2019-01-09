@@ -6,7 +6,7 @@ module cpu_top (input logic CLOCK,
 			output logic [3:0] byte_en,
 			output logic [31:0] write_data,
 			output logic [31:0] addr,
-			output reg[31:0] PC);
+			output logic[31:0] PC);
 
 	logic[31:0] sign_extendded_imm;
 	logic[31:0] sign_pc_imm;
@@ -14,10 +14,10 @@ module cpu_top (input logic CLOCK,
 	logic[31:0] sign_extendded_simm;
 	assign sign_extendded_imm =  { {20{INST.itype.imm [11]}}, INST.itype.imm [11:0] };
 	assign sign_extendded_bimm =  { {20{INST.btype.imm12}}, INST.btype.imm11, INST.btype.imm10_5, INST.btype.imm4_1,1'b0 };
-	assign sign_extendded_simm =  { {21{INST.stype.imm11_5[11]}}, INST.stype.imm11_5, INST.stype.imm4_0 };
+	assign sign_extendded_simm =  { {20{INST.stype.imm11_5[11]}}, INST.stype.imm11_5, INST.stype.imm4_0 };
 	assign sign_pc_imm = { {12{INST.jtype.imm20}}, INST.jtype.imm19_12 , INST.jtype.imm11, INST.jtype.imm10_1, 1'b0 };
 	reg[31:0] GPREGS[31:0];
-
+	initial PC = 32'h80000000;
 
 	always_ff @(posedge CLOCK) begin
 		PC <= PC +4;

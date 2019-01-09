@@ -6,7 +6,7 @@
 std::stringstream lastCmd;
 
 SimRISCV::SimRISCV(){
-	pc = 0;
+	pc = 0x80000000;
 	for(uint8_t i = 0;i<32;i++){
 		gpregs[i]=0;
 	}
@@ -26,7 +26,7 @@ SimRISCV * SimRISCV::get_sim(){
 
 void SimRISCV::reset(){
 	SimRISCV* tmp = get_sim();
-	tmp->pc = 0;
+	tmp->pc =  0x80000000;
 	std::cout << tmp->pc<<std::endl;
 	for(uint8_t i = 0;i<32;i++){
 		tmp->gpregs[i]=0;
