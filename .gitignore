@@ -1,3 +1,5 @@
 bench/cpu/
 .vscode/
 *.gpg
+/bench/bin_obj/
+/bench/test.*

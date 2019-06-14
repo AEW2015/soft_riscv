@@ -131,6 +131,7 @@ int main (int argc, char** argv)
 		if(pflag){
 			excute_instr();
 			if(done_flag){
+				printf("cycles : %llu",cycle);
 				printf("\nExit\n");
 				break;
 			}
