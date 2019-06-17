@@ -31,9 +31,12 @@ void assertSignal (uint32_t a, uint32_t b){
 		}
 }
 
+int timer = 0;
+int timer_ctl = 0;
+
 void test_instr();
 void excute_instr();
-#define ASIZE 0x4000
+#define ASIZE 0x10000
 static int instructionM [ASIZE];
 //static int dataM [2];
 static bool done_flag = 0;
@@ -182,6 +185,10 @@ int main (int argc, char** argv)
 
 #define CASES 37
 void excute_instr(){
+
+		if((timer_ctl&0x80) == 0x80){
+			timer  = timer + 1;
+		}
 		
 		uut->read_data = 0xFF;
 		int cmd = instructionM[((unsigned)uut->PC>>2)%ASIZE];
@@ -197,10 +204,18 @@ void excute_instr(){
 		uut->eval();
 		
 		if(uut->write_en){
-			if(uut->addr == 0x10000000){
+			//Uart 
+			if(uut->addr == 0x10000004){
 				char output = (char) (unsigned) uut->write_data;
 				printf("%c",output);
 			}
+			else if(uut->addr == 0x10001000){
+				timer_ctl = (int) (unsigned) uut->write_data;
+			}
+			else if(uut->addr == 0x10001004){
+				timer = (int) (unsigned) uut->write_data;
+			}
+			//done flag
 			else if(uut->addr == 0x20000000){
 				done_flag = 1;
 			}
@@ -265,6 +280,15 @@ void excute_instr(){
 
 		//check for read
 		if(uut->read_en){
+			
+			if(uut->addr == 0x10000008){
+				uut->read_data = 0x0;
+			}
+			else if(uut->addr == 0x10001008){
+				uut->read_data = timer;
+			}else
+			{
+				
 			int tmp_data = instructionM[((unsigned)uut->addr>>2)%ASIZE];
 			if(uut->byte_en==0xF)
 			uut->read_data = tmp_data;
@@ -295,6 +319,7 @@ void excute_instr(){
 				}
 
 
+			}
 			}
 			
 		}

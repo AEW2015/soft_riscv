@@ -3,3 +3,4 @@ bench/cpu/
 *.gpg
 /bench/bin_obj/
 /bench/test.*
+*.coe

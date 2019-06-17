@@ -7,6 +7,21 @@
 
 #define static_assert(cond) switch(0) { case 0: case !!(long)(cond): ; }
 
+
+extern char *malloc();
+char heap_memory[1024];
+int heap_memory_used = 0;
+
+char *malloc(int size)
+{
+	char *p = heap_memory + heap_memory_used;
+	// printf("[malloc(%d) -> %d (%d..%d)]", size, (int)p, heap_memory_used, heap_memory_used + size);
+	heap_memory_used += size;
+	if (heap_memory_used > 1024)
+		asm volatile ("ebreak");
+	return p;
+}
+
 int __attribute__((weak)) main(int argc, char** argv)
 {
   //write to uart addr
@@ -14,6 +29,23 @@ int __attribute__((weak)) main(int argc, char** argv)
   printf("Main Is missing!!\n");
 
   return -1;
+}
+
+long time()
+{
+	int cycles;
+	asm volatile ("rdcycle %0" : "=r"(cycles));
+	// printf("[time() -> %d]", cycles);
+	return cycles;
+}
+
+
+long insn()
+{
+	int insns;
+	asm volatile ("rdinstret %0" : "=r"(insns));
+	// printf("[insn() -> %d]", insns);
+	return insns;
 }
 
 void _init(){
@@ -25,11 +57,29 @@ void _init(){
 
 }
 
+void start_timer ()
+{
+  *(int *)(0x10001004) = 0x00;
+  *(int *)(0x10001000) = 0x20;
+  *(int *)(0x10001000) = 0x80;
+}
+
+int stop_timer ()
+{
+  *(int *)(0x10001000) = 0x00;
+  int result = *(int *)(0x10001008);
+  return result;
+}
 
 #undef putchar
 int putchar(int ch)
 {
-  *(int *)(0x10000000) = ch;
+  int test = *(int *)(0x10000008);
+  while((test&0x8) == 0x8)
+  {
+    test = *(int *)(0x10000008);
+  }
+  *(int *)(0x10000004) = ch;
   return 0;
 }
 

@@ -63,8 +63,9 @@ except IOError:
     print('Could not open files: ', args.inputFile + '.dumpDzs ', args.inputFile + '.dumpd')
     sys.exit()
 
-    program_output = args.inputFile + '.bin'
-    sim_output = args.inputFile + '.sim'
+program_output = args.inputFile + '.bin'
+sim_output = args.inputFile + '.sim'
+coe_output = 'vivado.coe'
     
 if (args.outputFile) :
     program_output = args.outputFile
@@ -76,11 +77,15 @@ if (args.simFile) :
 try:
     program_output = open(program_output, 'w')
     sim_output = open(sim_output, 'w')
+    coe_output = open(coe_output, 'w')
 except IOError:
-    print('Could not create files: ', program_output, sim_output)
+    print('Could not create files: ', program_output, sim_output,coe_output)
     sys.exit()
     
 print('array size ', int(int(args.ramSize)/4))
+
+coe_output.write('memory_initialization_radix=16;\r\n')
+coe_output.write('memory_initialization_vector=\r\n')
 
 ramData = ['00000000'] * int((int(args.ramSize)/4));
 
@@ -103,7 +108,8 @@ for line in program_input:
                 index+=1
 
 program_output.write('\n'.join(str(line) for line in ramData))
-
+coe_output.write(',\n'.join(str(line) for line in ramData))
+coe_output.write(';')
 #overwrite instruction entries with instruction info
 #<ins hex> <opcode> <instruction details>...
 for line in opcode_input:
