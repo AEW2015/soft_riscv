@@ -50,36 +50,36 @@ long insn()
 
 void _init(){
 
-
+    heap_memory_used = 0;
     int ret = main(0, 0);
-     *(int *)(0x20000000) = 1;
+     *(int *)(0x80000000) = 1;
     //write to host addr 
 
 }
 
 void start_timer ()
 {
-  *(int *)(0x10001004) = 0x00;
-  *(int *)(0x10001000) = 0x20;
-  *(int *)(0x10001000) = 0x80;
+  *(int *)(0x40010004) = 0x00;
+  *(int *)(0x40010000) = 0x20;
+  *(int *)(0x40010000) = 0x80;
 }
 
 int stop_timer ()
 {
-  *(int *)(0x10001000) = 0x00;
-  int result = *(int *)(0x10001008);
+  *(int *)(0x40010000) = 0x00;
+  int result = *(int *)(0x40010008);
   return result;
 }
 
 #undef putchar
 int putchar(int ch)
 {
-  int test = *(int *)(0x10000008);
+  int test = *(int *)(0x40000008);
   while((test&0x8) == 0x8)
   {
-    test = *(int *)(0x10000008);
+    test = *(int *)(0x40000008);
   }
-  *(int *)(0x10000004) = ch;
+  *(int *)(0x40000004) = ch;
   return 0;
 }
 

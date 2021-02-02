@@ -52,7 +52,7 @@ parser.add_argument('--quiet', '-q', help='Suppresses diagnostic output ', actio
 args = parser.parse_args()
 
 # open input file
-subprocess.run([args.toolPrefix + 'objdump', '-Dzs', args.inputFile], stdout=open(args.inputFile + '.dumpDzs', "w"))
+subprocess.run([args.toolPrefix + 'objdump', '-dzs', args.inputFile], stdout=open(args.inputFile + '.dumpDzs', "w"))
 subprocess.run([args.toolPrefix + 'objdump', '-d', args.inputFile], stdout=open(args.inputFile + '.dumpd', "w"))
 
 
@@ -91,7 +91,8 @@ ramData = ['00000000'] * int((int(args.ramSize)/4));
 
 lineRegex = re.compile(r'\s+')
 instLineRegex = re.compile(r'\s+|:\s+')
-dataLineRegex = re.compile(r' [a-f0-9]{8}\s+')
+commLineRegex = re.compile('comment:$')
+dataLineRegex = re.compile(r'^ [a-f0-9]{4}\s+')
 
 hexRegex = re.compile(r'[a-f0-9]{8}')
 
@@ -99,12 +100,19 @@ hexRegex = re.compile(r'[a-f0-9]{8}')
 for line in program_input:
     lineContents = lineRegex.split(line)
 
+    if(len(lineContents)>3 and lineContents[3] == '.comment:'):
+        break
+
     if (dataLineRegex.match(line) != None) :
+        print (line)
         index = int((int(lineContents[1],16) - int(args.baseAddr,16))/4)
+        print (index)
 
         for entry in lineContents[2:]: #skip address
             if (hexRegex.match(entry)) :
                 ramData[index] = stringByteSwap(entry)
+                
+                print (index,stringByteSwap(entry))
                 index+=1
 
 program_output.write('\n'.join(str(line) for line in ramData))

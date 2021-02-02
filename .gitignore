@@ -4,3 +4,6 @@ bench/cpu/
 /bench/bin_obj/
 /bench/test.*
 *.coe
+*.bin
+/bench/dump.txt
+/bench/output.log
