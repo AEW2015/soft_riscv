@@ -31,19 +31,19 @@ void assertSignal (uint32_t a, uint32_t b){
 		}
 }
 
-int timer = 0;
+long unsigned timer = 0;
 int timer_ctl = 0;
 
 void test_instr();
 void excute_instr();
-#define ASIZE 0x10000
+#define ASIZE 0x1000000
 static int instructionM [ASIZE];
 //static int dataM [2];
 static bool done_flag = 0;
 
 int main (int argc, char** argv)
 {
-	bool vcdTrace = true;
+	bool vcdTrace = false;
 	tfp = NULL;
 	int pflag = 0;
 	long long maxcycles = 1000000;
@@ -97,21 +97,21 @@ int main (int argc, char** argv)
 	// instructionM[2] = 0x00102023;
 	// instructionM[3] = 0x00002083;
 
-	instructionM[0] = 0x800007b7;//lbu(1,0,0);
-	instructionM[1] = 0x03200713;//sw(0,1,4);
-	instructionM[2] = 0x02e7ae23;
+	// instructionM[0] = 0x800007b7;//lbu(1,0,0);
+	// instructionM[1] = 0x03200713;//sw(0,1,4);
+	// instructionM[2] = 0x02e7ae23;
 
-	instructionM[3] = 0x100007b7;//lbu(1,0,0);
-	instructionM[4] = 0x03100713;//sw(0,1,4);
-	instructionM[5] = 0x00e7a023;
+	// instructionM[3] = 0x100007b7;//lbu(1,0,0);
+	// instructionM[4] = 0x03100713;//sw(0,1,4);
+	// instructionM[5] = 0x00e7a023;
 
-	instructionM[6] = 0x100007b7;//lbu(1,0,0);
-	instructionM[7] = 0x03000713;//sw(0,1,4);
-	instructionM[8] = 0x00e7a023;
+	// instructionM[6] = 0x100007b7;//lbu(1,0,0);
+	// instructionM[7] = 0x03000713;//sw(0,1,4);
+	// instructionM[8] = 0x00e7a023;
 
-	instructionM[9] = 0x200007b7;//lbu(1,0,0);
-	instructionM[10] = 0x03000713;//sw(0,1,4);
-	instructionM[11] = 0x00e7a023;
+	// instructionM[9] = 0x200007b7;//lbu(1,0,0);
+	// instructionM[10] = 0x03000713;//sw(0,1,4);
+	// instructionM[11] = 0x00e7a023;
 
 	if(pflag){
 		std::ifstream ifs("test.mem");
@@ -192,7 +192,7 @@ void excute_instr(){
 		
 		uut->read_data = 0xFF;
 		int cmd = instructionM[((unsigned)uut->PC>>2)%ASIZE];
-		//printf("0x%08X\n",((unsigned)uut->PC));
+		//printf("0x%08X := 0X%08X\n",((unsigned)uut->PC),cmd);
 		//printf("%d\n",((unsigned)uut->PC>>2)%ASIZE);
 		//printf("0x%08X\n",cmd);
 		//printf("0x%08X\n",uut->cpu_top__DOT__GPREGS[0]);
@@ -209,11 +209,14 @@ void excute_instr(){
 				char output = (char) (unsigned) uut->write_data;
 				printf("%c",output);
 			}
-			else if(uut->addr == 0x10001000){
+			else if(uut->addr == 0x10010000){
 				timer_ctl = (int) (unsigned) uut->write_data;
 			}
-			else if(uut->addr == 0x10001004){
-				timer = (int) (unsigned) uut->write_data;
+			else if(uut->addr == 0x10010004){
+				timer = (long) (unsigned) uut->write_data;
+			}
+			else if(uut->addr == 0x10010014){
+				timer = (long) (unsigned) uut->write_data;
 			}
 			//done flag
 			else if(uut->addr == 0x20000000){
@@ -284,8 +287,11 @@ void excute_instr(){
 			if(uut->addr == 0x10000008){
 				uut->read_data = 0x0;
 			}
-			else if(uut->addr == 0x10001008){
-				uut->read_data = timer;
+			else if(uut->addr == 0x10010008){
+				uut->read_data = timer & 0xFFFFFFFF;
+			}
+			else if(uut->addr == 0x10010018){
+				uut->read_data = timer >> 32;
 			}else
 			{
 				

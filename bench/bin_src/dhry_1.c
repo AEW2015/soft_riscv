@@ -17,8 +17,8 @@
 
 #include "dhry.h"
 
-#define RISCV
-#define TIME
+// /#define RISCV
+//#define TIME
 
 #ifdef USE_MYSTDLIB
 extern char     *malloc ();
@@ -111,7 +111,7 @@ main ()
 
   int bscan_count = 0;
 
-  while(1){
+ 
   Ptr_Glob->Ptr_Comp                    = Next_Ptr_Glob;
   Ptr_Glob->Discr                       = Ident_1;
   Ptr_Glob->variant.var_1.Enum_Comp     = Ident_3;
@@ -124,28 +124,28 @@ main ()
         /* Warning: With 16-Bit processors and Number_Of_Runs > 32000,  */
         /* overflow may occur for this array element.                   */
 
-  printf ("\n");
-  printf ("Dhrystone Benchmark, Version 2.1 (Language: C)\n");
-  printf ("\n");
+ //printf ("\n");
+ //printf ("Dhrystone Benchmark, Version 2.1 (Language: C)\n");
+ //printf ("\n");
   if (Reg)
   {
-    printf ("Program compiled with 'register' attribute\n");
-    printf ("\n");
+   //printf ("Program compiled with 'register' attribute\n");
+   //printf ("\n");
   }
   else
   {
-    printf ("Program compiled without 'register' attribute\n");
-    printf ("\n");
+   //printf ("Program compiled without 'register' attribute\n");
+   //printf ("\n");
   }
-  printf ("Please give the number of runs through the benchmark: ");
+ //printf ("Please give the number of runs through the benchmark: ");
   {
     // int n;
     // scanf ("%d", &n);
-    Number_Of_Runs = 30000;
+    Number_Of_Runs = 1000;
   }
-  printf ("\n");
+ printf ("\n");
 
-  printf ("Execution starts, %d runs through Dhrystone\n", Number_Of_Runs);
+ printf ("Execution starts, %d runs through Dhrystone\n", Number_Of_Runs);
 
   /***************/
   /* Start timer */
@@ -158,9 +158,9 @@ start_timer();
   Begin_Time = (long) time_info.tms_utime;
 #endif
 #ifdef TIME
-  Begin_Time = time ( (long *) 0);
+  //Begin_Time = time ( (long *) 0);
 #ifdef RISCV
-  Begin_Insn = insn ( (long *) 0);
+  //Begin_Insn = insn ( (long *) 0);
 #endif
 #endif
 
@@ -230,126 +230,133 @@ stop_watch = stop_timer();
 
  unsigned int checksum = 0;
 
-  printf ("Execution ends\n");
-  printf ("\n");
-  printf ("Final values of the variables used in the benchmark:\n");
-  printf ("\n");
-  printf ("Int_Glob:            %d\n", Int_Glob);
+ //printf ("Execution ends\n");
+ //printf ("\n");
+ //printf ("Final values of the variables used in the benchmark:\n");
+ //printf ("\n");
+ //printf ("Int_Glob:            %d\n", Int_Glob);
   checksum+=Int_Glob;
-  printf ("        should be:   %d\n", 5);
-  printf ("Bool_Glob:           %d\n", Bool_Glob);
+ //printf ("        should be:   %d\n", 5);
+ //printf ("Bool_Glob:           %d\n", Bool_Glob);
   checksum+=Bool_Glob;
-  printf ("        should be:   %d\n", 1);
-  printf ("Ch_1_Glob:           %c\n", Ch_1_Glob);
+ //printf ("        should be:   %d\n", 1);
+ //printf ("Ch_1_Glob:           %c\n", Ch_1_Glob);
   checksum+=Ch_1_Glob;
-  printf ("        should be:   %c\n", 'A');
-  printf ("Ch_2_Glob:           %c\n", Ch_2_Glob);
+ //printf ("        should be:   %c\n", 'A');
+ //printf ("Ch_2_Glob:           %c\n", Ch_2_Glob);
   checksum+=Ch_2_Glob;
-  printf ("        should be:   %c\n", 'B');
-  printf ("Arr_1_Glob[8]:       %d\n", Arr_1_Glob[8]);
+ //printf ("        should be:   %c\n", 'B');
+ //printf ("Arr_1_Glob[8]:       %d\n", Arr_1_Glob[8]);
   checksum+= Arr_1_Glob[8];
-  printf ("        should be:   %d\n", 7);
-  printf ("Arr_2_Glob[8][7]:    %d\n", Arr_2_Glob[8][7]);
+ //printf ("        should be:   %d\n", 7);
+ //printf ("Arr_2_Glob[8][7]:    %d\n", Arr_2_Glob[8][7]);
   checksum+=Arr_2_Glob[8][7];
-  printf ("        should be:   Number_Of_Runs + 10\n");
-  printf ("Ptr_Glob->\n");
-  printf ("  Ptr_Comp:          %d\n", (int) Ptr_Glob->Ptr_Comp);
+ //printf ("        should be:   Number_Of_Runs + 10\n");
+ //printf ("Ptr_Glob->\n");
+ //printf ("  Ptr_Comp:          %d\n", (int) Ptr_Glob->Ptr_Comp);
   checksum+=(int) Ptr_Glob->Ptr_Comp;
-  printf ("        should be:   (implementation-dependent)\n");
-  printf ("  Discr:             %d\n", Ptr_Glob->Discr);
+ //printf ("        should be:   (implementation-dependent)\n");
+ //printf ("  Discr:             %d\n", Ptr_Glob->Discr);
   checksum+=Ptr_Glob->Discr;
-  printf ("        should be:   %d\n", 0);
-  printf ("  Enum_Comp:         %d\n", Ptr_Glob->variant.var_1.Enum_Comp);
+ //printf ("        should be:   %d\n", 0);
+ //printf ("  Enum_Comp:         %d\n", Ptr_Glob->variant.var_1.Enum_Comp);
   checksum+=Ptr_Glob->variant.var_1.Enum_Comp;
-  printf ("        should be:   %d\n", 2);
-  printf ("  Int_Comp:          %d\n", Ptr_Glob->variant.var_1.Int_Comp);
+ //printf ("        should be:   %d\n", 2);
+ //printf ("  Int_Comp:          %d\n", Ptr_Glob->variant.var_1.Int_Comp);
   checksum+=Ptr_Glob->variant.var_1.Int_Comp;
-  printf ("        should be:   %d\n", 17);
-  printf ("  Str_Comp:          %s\n", Ptr_Glob->variant.var_1.Str_Comp);
+ //printf ("        should be:   %d\n", 17);
+ //printf ("  Str_Comp:          %s\n", Ptr_Glob->variant.var_1.Str_Comp);
   checksum+=Ptr_Glob->variant.var_1.Str_Comp[1];
-  printf ("        should be:   DHRYSTONE PROGRAM, SOME STRING\n");
-  printf ("Next_Ptr_Glob->\n");
-  printf ("  Ptr_Comp:          %d\n", (int) Next_Ptr_Glob->Ptr_Comp);
+ //printf ("        should be:   DHRYSTONE PROGRAM, SOME STRING\n");
+ //printf ("Next_Ptr_Glob->\n");
+ //printf ("  Ptr_Comp:          %d\n", (int) Next_Ptr_Glob->Ptr_Comp);
   checksum+=(int) Next_Ptr_Glob->Ptr_Comp;
-  printf ("        should be:   (implementation-dependent), same as above\n");
-  printf ("  Discr:             %d\n", Next_Ptr_Glob->Discr);
+ //printf ("        should be:   (implementation-dependent), same as above\n");
+ //printf ("  Discr:             %d\n", Next_Ptr_Glob->Discr);
   checksum+=Next_Ptr_Glob->Discr;
-  printf ("        should be:   %d\n", 0);
-  printf ("  Enum_Comp:         %d\n", Next_Ptr_Glob->variant.var_1.Enum_Comp);
+ //printf ("        should be:   %d\n", 0);
+ //printf ("  Enum_Comp:         %d\n", Next_Ptr_Glob->variant.var_1.Enum_Comp);
   checksum+=Next_Ptr_Glob->variant.var_1.Enum_Comp;
-  printf ("        should be:   %d\n", 1);
-  printf ("  Int_Comp:          %d\n", Next_Ptr_Glob->variant.var_1.Int_Comp);
+ //printf ("        should be:   %d\n", 1);
+ //printf ("  Int_Comp:          %d\n", Next_Ptr_Glob->variant.var_1.Int_Comp);
   checksum+=Next_Ptr_Glob->variant.var_1.Int_Comp;
-  printf ("        should be:   %d\n", 18);
-  printf ("  Str_Comp:          %s\n",
-                                Next_Ptr_Glob->variant.var_1.Str_Comp);
+ //printf ("        should be:   %d\n", 18);
+ //printf ("  Str_Comp:          %s\n",
+ //                              Next_Ptr_Glob->variant.var_1.Str_Comp);
   checksum+=Next_Ptr_Glob->variant.var_1.Str_Comp[1];
-  printf ("        should be:   DHRYSTONE PROGRAM, SOME STRING\n");
-  printf ("Int_1_Loc:           %d\n", Int_1_Loc);
+ //printf ("        should be:   DHRYSTONE PROGRAM, SOME STRING\n");
+ //printf ("Int_1_Loc:           %d\n", Int_1_Loc);
   checksum+=Int_1_Loc;
-  printf ("        should be:   %d\n", 5);
-  printf ("Int_2_Loc:           %d\n", Int_2_Loc);
+ //printf ("        should be:   %d\n", 5);
+ //printf ("Int_2_Loc:           %d\n", Int_2_Loc);
   checksum+=Int_2_Loc;
-  printf ("        should be:   %d\n", 13);
-  printf ("Int_3_Loc:           %d\n", Int_3_Loc);
+ //printf ("        should be:   %d\n", 13);
+ //printf ("Int_3_Loc:           %d\n", Int_3_Loc);
   checksum+=Int_3_Loc;
-  printf ("        should be:   %d\n", 7);
-  printf ("Enum_Loc:            %d\n", Enum_Loc);
+ //printf ("        should be:   %d\n", 7);
+ //printf ("Enum_Loc:            %d\n", Enum_Loc);
   checksum+=Enum_Loc;
-  printf ("        should be:   %d\n", 1);
-  printf ("Str_1_Loc:           %s\n", Str_1_Loc);
+ //printf ("        should be:   %d\n", 1);
+ //printf ("Str_1_Loc:           %s\n", Str_1_Loc);
   checksum+=Str_1_Loc[16];
-  printf ("        should be:   DHRYSTONE PROGRAM, 1'ST STRING\n");
-  printf ("Str_2_Loc:           %s\n", Str_2_Loc);
+  //printf ("        should be:   DHRYSTONE PROGRAM, 1'ST STRING\n");
+  //printf ("Str_2_Loc:           %s\n", Str_2_Loc);
   checksum+=Str_2_Loc[16];
-  printf ("        should be:   DHRYSTONE PROGRAM, 2'ND STRING\n");
-  printf ("\n");
+  //printf ("        should be:   DHRYSTONE PROGRAM, 2'ND STRING\n");
+  //printf ("\n");
 
   
- User_Time = End_Time - Begin_Time;
+//  User_Time = End_Time - Begin_Time;
 
-#ifdef RISCV
-  User_Insn = End_Insn - Begin_Insn;
+// #ifdef RISCV
+//   User_Insn = End_Insn - Begin_Insn;
 
   printf("Number_Of_Runs: %d\n", Number_Of_Runs);
   printf("Stop_watch: %d cycles\n", stop_watch);
-  printf("User_Time: %d cycles\n", User_Time);
-  printf("User_Insn: %d cycles\n", User_Insn);
+  printf("User_Time: %d cycles\n", stop_watch);
+    int Dhrystones_Per_Second_Per_MHz = (Number_Of_Runs * 1000000) / stop_watch;
+  printf("Dhrystones_Per_Second_Per_MHz: %d\n", Dhrystones_Per_Second_Per_MHz);
 
-  printf("checksum: %d cycles\n", checksum);
+  int DMIPS_Per_MHz_x1000 = (1000 * Dhrystones_Per_Second_Per_MHz) / 1757;
+  printf("DMIPS_Per_MHz: %d.%d%d%d\n", DMIPS_Per_MHz_x1000 / 1000,
+		(DMIPS_Per_MHz_x1000 / 100) % 10,
+		(DMIPS_Per_MHz_x1000 / 10) % 10,
+		(DMIPS_Per_MHz_x1000 / 1) % 10);
+  // printf("User_Insn: %d cycles\n", User_Insn);
+
+  printf("checksum: %x cycles\n", checksum);
   
 
 
-  *((volatile unsigned int*)0x10002000) = bscan_count;
-  *((volatile unsigned int*)0x10002004)  = checksum+bscan_count;
-  printf("bscan_count: %d cycles\n", bscan_count++);
-#else
-  if (User_Time < Too_Small_Time)
-  {
-    printf ("Measured time too small to obtain meaningful results\n");
-    printf ("Please increase number of runs\n");
-    printf ("\n");
-  }
-  else
-  {
-#ifdef TIME
-    Microseconds = (float) User_Time * Mic_secs_Per_Second
-                        / (float) Number_Of_Runs;
-    Dhrystones_Per_Second = (float) Number_Of_Runs / (float) User_Time;
-#else
-    Microseconds = (float) User_Time * Mic_secs_Per_Second
-                        / ((float) HZ * ((float) Number_Of_Runs));
-    Dhrystones_Per_Second = ((float) HZ * (float) Number_Of_Runs)
-                        / (float) User_Time;
-#endif
-    printf ("Microseconds for one run through Dhrystone: ");
-    printf ("%6.1f \n", Microseconds);
-    printf ("Dhrystones per Second:                      ");
-    printf ("%6.1f \n", Dhrystones_Per_Second);
-    printf ("\n");
-  }
-#endif
-}
+//   //*((volatile unsigned int*)0x10002000) = bscan_count;
+//   //*((volatile unsigned int*)0x10002004)  = checksum+bscan_count;
+//   printf("bscan_count: %d cycles\n", bscan_count++);
+// #else
+//   if (User_Time < Too_Small_Time)
+//   {
+//     printf ("Measured time too small to obtain meaningful results\n");
+//     printf ("Please increase number of runs\n");
+//     printf ("\n");
+//   }
+//   else
+//   {
+// #ifdef TIME
+//     Microseconds = (float) User_Time * Mic_secs_Per_Second
+//                         / (float) Number_Of_Runs;
+//     Dhrystones_Per_Second = (float) Number_Of_Runs / (float) User_Time;
+// #else
+//     Microseconds = (float) User_Time * Mic_secs_Per_Second
+//                         / ((float) HZ * ((float) Number_Of_Runs));
+//     Dhrystones_Per_Second = ((float) HZ * (float) Number_Of_Runs)
+//                         / (float) User_Time;
+// #endif
+//     printf ("Microseconds for one run through Dhrystone: ");
+//     printf ("%6.1f \n", Microseconds);
+//     printf ("Dhrystones per Second:                      ");
+//     printf ("%6.1f \n", Dhrystones_Per_Second);
+//     printf ("\n");
+//   }
+// #endif
 }
 
 

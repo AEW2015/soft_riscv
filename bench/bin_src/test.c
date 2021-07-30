@@ -10,14 +10,31 @@ int fact (int input){
 }
 
 int main(){
+
+  *(int *)(0x10000004) = 0x34;
   int sum = 0;
   int i;
-  for(i = 0;i<SUM_END+1;i++)
-    sum += i;
-    
+  int* addr = malloc(0x10);
 
-  printf("Hello Me!\n");
-  printf("sum 0 to %d = %d\n",SUM_END,sum);
-  printf("Factorial %d = %d\n",FACT_COUNT,fact(FACT_COUNT));
+  float testp = 10;
+  int value = testp * 1.01;
+  *(int *)(0x10000004) = 0x34;
+  *(int *)(0x10000004) = 0x34;
+  *(int *)(0x10000004) = 0x34;
+  *(int *)(0x10000004) = 0x34;
+
+  printf("hello\n\r");
+  *(int *)(0x10000004) = 0x34;
+  *(int *)(0x10000004) = 0x34;
+  *(int *)(0x10000004) = 0x34;
+  *(int *)(0x10000004) = 0x34;
+
+  for(i = 0;i<SUM_END+1;i++)
+  {
+    sum += i;
+    *addr = sum;
+    *(((int*)0x90000000)+i) = sum;
+    *(((int*)0x88000000)+i) = *(((int*)0x90000000)+i);
+  }
   return 0;
 }

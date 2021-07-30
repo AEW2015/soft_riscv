@@ -104,6 +104,7 @@ for line in program_input:
 
         for entry in lineContents[2:]: #skip address
             if (hexRegex.match(entry)) :
+                #print(index,stringByteSwap(entry),lineContents)
                 ramData[index] = stringByteSwap(entry)
                 index+=1
 

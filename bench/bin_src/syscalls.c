@@ -9,17 +9,50 @@
 
 
 extern char *malloc();
-char heap_memory[1024];
+char heap_memory[0x2000];
 int heap_memory_used = 0;
+int malloc_count = 0;
+
+
+#define MALLOC_INFO 0x88000004
 
 char *malloc(int size)
 {
+  printf("mal0");
 	char *p = heap_memory + heap_memory_used;
-	// printf("[malloc(%d) -> %d (%d..%d)]", size, (int)p, heap_memory_used, heap_memory_used + size);
+  printf("mal1");
+  //*((int *)(MALLOC_INFO)+0+malloc_count) = heap_memory_used;
+	//printf("[malloc(%d) -=> 0x%x (%d..%d)]", size, (int)p, heap_memory_used, heap_memory_used + size);
 	heap_memory_used += size;
-	if (heap_memory_used > 1024)
-		asm volatile ("ebreak");
+
+  //*((int *)(MALLOC_INFO)+1+malloc_count) = heap_memory_used;
+
+  //*((int *)(MALLOC_INFO)+2+malloc_count) = malloc_count;
+  malloc_count++;
+
+		//asm volatile ("ebreak");
 	return p;
+}
+
+char *myMalloc(int size)
+{
+	char *p = heap_memory + heap_memory_used;
+  //*((int *)(MALLOC_INFO)+0+malloc_count) = heap_memory_used;
+	//printf("[malloc(%d) -=> 0x%x (%d..%d)]", size, (int)p, heap_memory_used, heap_memory_used + size);
+	heap_memory_used += size;
+
+  //*((int *)(MALLOC_INFO)+1+malloc_count) = heap_memory_used;
+
+  //*((int *)(MALLOC_INFO)+2+malloc_count) = malloc_count;
+  malloc_count++;
+
+		//asm volatile ("ebreak");
+	return p;
+}
+
+void myFree(void *ptr)
+{
+  return;
 }
 
 int __attribute__((weak)) main(int argc, char** argv)
@@ -39,6 +72,15 @@ long time()
 	return cycles;
 }
 
+long long unsigned  clock()
+{
+  //long unsigned result = *(int *)(0x10010008);
+  //result = (((long unsigned)*(int *)(0x10010018))<<32)|result;
+  long long unsigned result = *(unsigned *)(0x10010018);
+  result = result <<32;
+  result =result + *(unsigned *)(0x10010008);
+  return result;
+}
 
 long insn()
 {
@@ -50,8 +92,14 @@ long insn()
 
 void _init(){
 
-
+    heap_memory_used = 0;
+    malloc_count = 0;
+    printf("start");
+    start_timer();
     int ret = main(0, 0);
+    //printf("%lld\n\r",clock());
+    //printf("0: %d\n\r",*(unsigned *)(0x10010008));
+    printf("done");
      *(int *)(0x20000000) = 1;
     //write to host addr 
 
@@ -59,15 +107,23 @@ void _init(){
 
 void start_timer ()
 {
-  *(int *)(0x10001004) = 0x00;
-  *(int *)(0x10001000) = 0x20;
-  *(int *)(0x10001000) = 0x80;
+  *(int *)(0x10010004) = 0x00;
+  *(int *)(0x10010000) = 0x00;
+  *(int *)(0x10010000) = 0x20;
+  *(int *)(0x10010014) = 0x00;
+  *(int *)(0x10010010) = 0x20;
+  *(int *)(0x10010010) = 0x00;
+  *(int *)(0x10010000) = 0x800;
+  *(int *)(0x10010000) = 0x820;
+  *(int *)(0x10010000) = 0x880;
 }
 
-int stop_timer ()
+long long unsigned stop_timer ()
 {
-  *(int *)(0x10001000) = 0x00;
-  int result = *(int *)(0x10001008);
+  *(int *)(0x10010000) = 0x00;
+  long long unsigned result = *(unsigned *)(0x10010018);
+  result = result <<32;
+  result =result + *(unsigned *)(0x10010008);
   return result;
 }
 
@@ -77,8 +133,11 @@ int putchar(int ch)
   int test = *(int *)(0x10000008);
   while((test&0x8) == 0x8)
   {
-    test = *(int *)(0x10000008);
+   test = *(int *)(0x10000008);
   }
+  //for(int i =0; i<0xFFFF;i++);
+
+
   *(int *)(0x10000004) = ch;
   return 0;
 }
@@ -132,6 +191,7 @@ static void vprintfmt(void (*putch)(int, void**), void **putdat, const char *fmt
   register int ch, err;
   unsigned long long num;
   int base, lflag, width, precision, altflag;
+  float tmp;
   char padc;
     
   while (1) {
@@ -255,6 +315,17 @@ static void vprintfmt(void (*putch)(int, void**), void **putdat, const char *fmt
       /* fall through to 'x' */
 
     // (unsigned) hexadecimal
+    case 'f':
+      tmp = va_arg(ap, double);
+      num = tmp;
+      base = 10;
+      printnum(putch, putdat, num, base, width, padc);
+      putch('.', putdat);
+      num = (int)(tmp*10000)%10000;
+      printnum(putch, putdat, num, base, width, padc);
+      break;
+
+
     case 'x':
       base = 16;
     unsigned_number:
