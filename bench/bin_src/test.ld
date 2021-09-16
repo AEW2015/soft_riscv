@@ -22,10 +22,10 @@ SECTIONS
 {
 
   /* text: test code section */
-  . = 0x60000000;
+  . = 0x00000000;
   .text.init : { *(.text.init) }
 
-  . = ALIGN(0x1000);
+  
   .tohost : { *(.tohost) }
 
   .text : { *(.text) }
@@ -34,7 +34,7 @@ SECTIONS
   .data : { *(.data) }
 
   .sdata : {
-    __global_pointer$ = . + 0x800;
+    __global_pointer$ = . + 0x600;
     *(.srodata.cst16) *(.srodata.cst8) *(.srodata.cst4) *(.srodata.cst2) *(.srodata*)
     *(.sdata .sdata.* .gnu.linkonce.s.*)
   }

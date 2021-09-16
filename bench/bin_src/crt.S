@@ -41,14 +41,13 @@ _start:
 
   la  tp, _end + 63
   and tp, tp, -64
-  #define STKSHIFT 14
+  #define STKSHIFT 10
   sll a2, a0, STKSHIFT
   add tp, tp, a2
   add sp, a0, 1
   sll sp, sp, STKSHIFT
   add sp, sp, tp
 
-  fence.i
 
   j _init
 

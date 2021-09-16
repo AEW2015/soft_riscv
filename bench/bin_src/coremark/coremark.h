@@ -42,6 +42,8 @@ Original Author: Shay Gal-on
 #endif
 #if HAS_PRINTF
 #define ee_printf printf
+#else
+#define ee_printf //printf
 #endif
 
 /* Actual benchmark execution in iterate */
@@ -65,10 +67,10 @@ typedef ee_u32 secs_ret;
 #define MAIN_RETURN_TYPE int
 #endif
 
-void       start_time(void);
-void       stop_time(void);
-CORE_TICKS get_time(void);
-secs_ret   time_in_secs(CORE_TICKS ticks);
+// void       start_time(void);
+// void       stop_time(void);
+// CORE_TICKS get_time(void);
+// secs_ret   time_in_secs(CORE_TICKS ticks);
 
 /* Misc useful functions */
 ee_u16 crcu8(ee_u8 data, ee_u16 crc);

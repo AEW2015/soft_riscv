@@ -205,9 +205,17 @@ void excute_instr(){
 		
 		if(uut->write_en){
 			//Uart 
+			if(uut->addr >= 0x80004000){
+				int output = uut->addr;
+				printf("bad_write: 0x%08X\n\r",output);
+			}
 			if(uut->addr == 0x10000004){
 				char output = (char) (unsigned) uut->write_data;
 				printf("%c",output);
+			}
+			if(uut->addr == 0x40000000){
+				int output = uut->write_data;
+				printf("uart_port: 0x%08X\n\r",output);
 			}
 			else if(uut->addr == 0x10010000){
 				timer_ctl = (int) (unsigned) uut->write_data;
@@ -284,6 +292,10 @@ void excute_instr(){
 		//check for read
 		if(uut->read_en){
 			
+			if(uut->addr >= 0x80004000){
+				int output = uut->addr;
+				printf("bad_read: 0x%08X\n\r",output);
+			}
 			if(uut->addr == 0x10000008){
 				uut->read_data = 0x0;
 			}

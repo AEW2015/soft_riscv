@@ -70,11 +70,11 @@ static CORETIMETYPE start_time_val, stop_time_val;
    example code) or zeroing some system parameters - e.g. setting the cpu clocks
    cycles to 0.
 */
-void
-start_time(void)
-{
-    start_time_val = clock();
-}
+// void
+// start_time(void)
+// {
+//     start_time_val = clock();
+// }
 /* Function : stop_time
         This function will be called right after ending the timed portion of the
    benchmark.
@@ -83,16 +83,16 @@ start_time(void)
    example code) or other system parameters - e.g. reading the current value of
    cpu cycles counter.
 */
-void
-stop_time(void)
-{
-    //stop_time_val = clock();
-    long long unsigned result = *(unsigned *)(0x10010018);
-    result = result <<32;
-    result =result + *(unsigned *)(0x10010008);
-    stop_time_val = result;
+// void
+// stop_time(void)
+// {
+//     //stop_time_val = clock();
+//     long long unsigned result = *(unsigned *)(0x10010018);
+//     result = result <<32;
+//     result =result + *(unsigned *)(0x10010008);
+//     stop_time_val = result;
 
-}
+// }
 /* Function : get_time
         Return an abstract "ticks" number that signifies time on the system.
 
@@ -102,13 +102,13 @@ stop_time(void)
    sample implementation returns millisecs by default, and the resolution is
    controlled by <TIMER_RES_DIVIDER>
 */
-CORE_TICKS
-get_time(void)
-{
-    CORE_TICKS elapsed
-        = (CORE_TICKS)(MYTIMEDIFF(stop_time_val, start_time_val));
-    return elapsed;
-}
+// CORE_TICKS
+// get_time(void)
+// {
+//     CORE_TICKS elapsed
+//         = (CORE_TICKS)(MYTIMEDIFF(stop_time_val, start_time_val));
+//     return elapsed;
+// }
 /* Function : time_in_secs
         Convert the value returned by get_time to seconds.
 
@@ -116,12 +116,12 @@ get_time(void)
    floating point. Default implementation implemented by the EE_TICKS_PER_SEC
    macro above.
 */
-secs_ret
-time_in_secs(CORE_TICKS ticks)
-{
-    secs_ret retval = ((secs_ret)ticks) / (secs_ret)EE_TICKS_PER_SEC;
-    return retval;
-}
+// secs_ret
+// time_in_secs(CORE_TICKS ticks)
+// {
+//     secs_ret retval = ((secs_ret)ticks) / (secs_ret)EE_TICKS_PER_SEC;
+//     return retval;
+// }
 
 ee_u32 default_num_contexts = 1;
 
