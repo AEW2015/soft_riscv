@@ -25,6 +25,7 @@ import re
 import sys
 import subprocess
 import tempfile
+from pathlib import Path
 
 def stringByteSwap(s):
     pairs = [s[i:i+2] for i in range(0, len(s), 2)]
@@ -44,8 +45,8 @@ parser.add_argument('ramSize', help='the ram size')
 parser.add_argument('inputFile', help='The executable')
 
 # output file names
-parser.add_argument('outputFile', help='The ram init file')
-parser.add_argument('simFile', help='The sim data file')
+parser.add_argument('outputDir', help='Output Dir')
+
 
 parser.add_argument('--quiet', '-q', help='Suppresses diagnostic output ', action="store_true")
 
@@ -63,15 +64,12 @@ except IOError:
     print('Could not open files: ', args.inputFile + '.dumpDzs ', args.inputFile + '.dumpd')
     sys.exit()
 
-program_output = args.inputFile + '.bin'
-sim_output = args.inputFile + '.sim'
-coe_output = 'vivado.coe'
-    
-if (args.outputFile) :
-    program_output = args.outputFile
-if (args.simFile) :
-    sim_output = args.simFile
-    
+file_name = Path(args.inputFile).stem
+
+program_output = args.outputDir + file_name + '.mem'
+sim_output = args.outputDir + file_name + '.comments'
+coe_output = args.outputDir + file_name + '.coe'
+        
 
 # open output file
 try:

@@ -1,0 +1,12 @@
+parameter 'p' specified with the value bin_test/dhry_bram_i.mem
+parameter 'l' specified with the value 10000000000
+start
+Execution starts, 1000 runs through Dhrystone
+Number_Of_Runs: 1000
+Stop_watch: 545029 cycles
+User_Time: 545029 cycles
+Dhrystones_Per_Second_Per_MHz: 1834
+DMIPS_Per_MHz: 1.043
+checksum: c000d9c4 cycles
+donecycles : 576780
+Exit

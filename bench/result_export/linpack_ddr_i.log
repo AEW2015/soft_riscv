@@ -1,0 +1,25 @@
+parameter 'p' specified with the value bin_test/linpack_ddr_i.mem
+parameter 'l' specified with the value 10000000000
+start
+
+PreMalloc.
+
+
+LINPACK benchmark, Single precision.
+time: 1000000.
+time: 7502.
+time: 0.
+Machine precision:  6 digits.
+Array size 50 X 50.
+Memory required:  10K.
+Average rolled and unrolled performance:
+    Reps Time(s) DGEFA   DGESL  OVERHEAD    KFLOPS
+----------------------------------------------------
+       8 0.5552 75.8432% 4.5960% 19.5607%  417.9136
+      16 1.1105 75.8424% 4.5962% 19.5613%  417.9096
+      32 2.2211 75.8421% 4.5961% 19.5616%  417.9089
+      64 4.4423 75.8420% 4.5962% 19.5617%  417.9088
+     128 8.8847 75.8420% 4.5962% 19.5617%  417.9084
+     256 17.7694 75.8416% 4.5962% 19.5621%  417.9102
+donecycles : 3547157838
+Exit

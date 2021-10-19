@@ -18,9 +18,9 @@ int malloc_count = 0;
 
 char *malloc(int size)
 {
-  printf("mal0");
+  //printf("mal0");
 	char *p = heap_memory + heap_memory_used;
-  printf("mal1");
+  //printf("mal1");
   //*((int *)(MALLOC_INFO)+0+malloc_count) = heap_memory_used;
 	//printf("[malloc(%d) -=> 0x%x (%d..%d)]", size, (int)p, heap_memory_used, heap_memory_used + size);
 	heap_memory_used += size;

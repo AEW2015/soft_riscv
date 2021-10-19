@@ -1,0 +1,24 @@
+parameter 'p' specified with the value bin_test/linpacd_bram_i.mem
+parameter 'l' specified with the value 10000000000
+start
+
+PreMalloc.
+
+
+LINPACK benchmark, Double precision.
+time: 1000000.
+time: 7502.
+time: 0.
+Machine precision:  15 digits.
+Array size 50 X 50.
+Memory required:  20K.
+Average rolled and unrolled performance:
+    Reps Time(s) DGEFA   DGESL  OVERHEAD    KFLOPS
+----------------------------------------------------
+       4 0.7799 84.7086% 4.9959% 10.2954%  133.3974
+       8 1.5599 84.7076% 4.9958% 10.2964%  133.3974
+      16 3.1199 84.7072% 4.9958% 10.2969%  133.3974
+      32 6.2398 84.7069% 4.9958% 10.2971%  133.3974
+      64 12.4796 84.7068% 4.9958% 10.2973%  133.3974
+donecycles : 2476632928
+Exit

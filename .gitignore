@@ -2,5 +2,8 @@ bench/cpu/
 .vscode/
 *.gpg
 /bench/bin_obj/
+/bench/bin_test/
+/bench/bin_export/
+/bench/result_logs/
 /bench/test.*
 *.coe

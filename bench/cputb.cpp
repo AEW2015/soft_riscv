@@ -48,17 +48,22 @@ int main (int argc, char** argv)
 	int pflag = 0;
 	long long maxcycles = 1000000;
 	int c;
-	  while ((c = getopt (argc, argv, "pl:")) != -1)
+	std::string test_mem = "NULL";
+
+	  while ((c = getopt (argc, argv, "p:l:")) != -1)
 		switch (c)
 		{
 		case 'p':
 			pflag = 1;
+			test_mem = optarg;
+			printf("parameter 'p' specified with the value %s\n",optarg);
 			break;
 		case 'l':
 			maxcycles = std::stoll(optarg);
+			printf("parameter 'l' specified with the value %s\n",optarg);
 			break;
 		case '?':
-			if (optopt == 'l')
+			if (optopt == 'l' | optopt == 'p' )
 			fprintf (stderr, "Option -%c requires an argument.\n", optopt);
 			else if (isprint (optopt))
 			fprintf (stderr, "Unknown option `-%c'.\n", optopt);
@@ -114,7 +119,7 @@ int main (int argc, char** argv)
 	// instructionM[11] = 0x00e7a023;
 
 	if(pflag){
-		std::ifstream ifs("test.mem");
+		std::ifstream ifs(test_mem);
 
 		std::string line;
 		int index = 0;

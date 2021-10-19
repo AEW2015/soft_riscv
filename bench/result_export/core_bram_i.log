@@ -1,0 +1,21 @@
+parameter 'p' specified with the value bin_test/core_bram_i.mem
+parameter 'l' specified with the value 10000000000
+startHello Coremark.
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 73313383
+Total time (secs): 0.7331
+Iterations/Sec   : 136.4007
+ERROR! Must execute for at least 10 secs for a valid result!
+Iterations       : 100
+Compiler version : GCC8.3.0
+Compiler flags   : 
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x988c
+Errors detected
+donecycles : 73384987
+Exit

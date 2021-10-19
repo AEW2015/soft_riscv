@@ -1,0 +1,34 @@
+parameter 'p' specified with the value bin_test/stream_ddr_i.mem
+parameter 'l' specified with the value 10000000000
+start-------------------------------------------------------------
+STREAM version $Revision: 5.10 $
+-------------------------------------------------------------
+This system uses 8 bytes per array element.
+-------------------------------------------------------------
+Array size = 1000 (elements), Offset = 0 (elements)
+Memory per array = 0.76 MiB (= 0.0 GiB).
+Total memory required = 0.228 MiB (= 0.0 GiB).
+Each kernel will be executed 10 times.
+ The *best* time for each kernel (excluding the first iteration)
+ will be used to compute the reported bandwidth.
+-------------------------------------------------------------
+Your clock granularity appears to be less than one microsecond.
+Each test below will take on the order of 820 microseconds.
+   (= 820 clock ticks)
+Increase the size of the arrays if this shows that
+you are not getting at least 20 clock ticks per test.
+-------------------------------------------------------------
+WARNING -- The above is only a rough guideline.
+For best results, please be sure you know the
+precision of your system timer.
+-------------------------------------------------------------
+Function    Best Rate MB/s  Avg time     Min time     Max time
+Copy:      176.7174  0.0  0.0  0.0
+Scale:     3.472  0.52  0.52  0.53
+Add:       24.9851  0.10  0.9  0.11
+Triad:     3.8831  0.62  0.61  0.62
+-------------------------------------------------------------
+Solution Validates: avg error less than %e on all three arrays
+-------------------------------------------------------------
+donecycles : 13402876
+Exit

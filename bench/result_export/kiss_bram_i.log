@@ -1,0 +1,97 @@
+parameter 'p' specified with the value bin_test/kiss_bram_i.mem
+parameter 'l' specified with the value 10000000000
+start
+---- Results ---- 
+
+-- 1D --
+Dim 1
+Size 2
+Buffer_Mem_Req 16
+Microseconds_Per_FFT 1.9500
+totalRuntime 0.19
+Dim 1
+Size 4
+Buffer_Mem_Req 32
+Microseconds_Per_FFT 3.7700
+totalRuntime 0.37
+Dim 1
+Size 8
+Buffer_Mem_Req 64
+Microseconds_Per_FFT 13.9600
+totalRuntime 0.139
+Dim 1
+Size 16
+Buffer_Mem_Req 128
+Microseconds_Per_FFT 25.6900
+totalRuntime 0.256
+Dim 1
+Size 32
+Buffer_Mem_Req 256
+Microseconds_Per_FFT 77.3000
+totalRuntime 0.773
+Dim 1
+Size 64
+Buffer_Mem_Req 512
+Microseconds_Per_FFT 141.8700
+totalRuntime 0.1418
+Dim 1
+Size 128
+Buffer_Mem_Req 1024
+Microseconds_Per_FFT 391.5600
+totalRuntime 0.3915
+Dim 1
+Size 256
+Buffer_Mem_Req 2048
+Microseconds_Per_FFT 720.2900
+totalRuntime 0.7202
+Dim 1
+Size 512
+Buffer_Mem_Req 4096
+Microseconds_Per_FFT 1891.9002
+totalRuntime 1.8919
+
+-- 2D --
+Dim 2
+Size 2
+Buffer_Mem_Req 32
+Microseconds_Per_FFT 9.2100
+totalRuntime 0.92
+Dim 2
+Size 4
+Buffer_Mem_Req 128
+Microseconds_Per_FFT 31.8500
+totalRuntime 0.318
+Dim 2
+Size 8
+Buffer_Mem_Req 512
+Microseconds_Per_FFT 225.4500
+totalRuntime 0.2254
+Dim 2
+Size 16
+Buffer_Mem_Req 2048
+Microseconds_Per_FFT 824.8100
+totalRuntime 0.8248
+Dim 2
+Size 32
+Buffer_Mem_Req 8192
+Microseconds_Per_FFT 4951.504
+totalRuntime 4.9510
+
+-- 3D --
+Dim 3
+Size 2
+Buffer_Mem_Req 64
+Microseconds_Per_FFT 25.7400
+totalRuntime 0.257
+Dim 3
+Size 4
+Buffer_Mem_Req 512
+Microseconds_Per_FFT 184.8600
+totalRuntime 0.1848
+Dim 3
+Size 8
+Buffer_Mem_Req 4096
+Microseconds_Per_FFT 2689.200
+totalRuntime 2.6890
+donecycles : 1262993338
+Exit
